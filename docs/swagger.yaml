@@ -1,0 +1,483 @@
+definitions:
+  enum.ListForm:
+    properties:
+      name:
+        type: string
+      pageNo:
+        example: 1
+        minimum: 0
+        type: integer
+      pageSize:
+        example: 10
+        minimum: 0
+        type: integer
+      typeName:
+        type: string
+    required:
+    - pageNo
+    - pageSize
+    type: object
+  enum.SaveForm:
+    properties:
+      code:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      parentId:
+        type: string
+      typeCode:
+        type: string
+      typeName:
+        type: string
+    required:
+    - code
+    - name
+    - typeCode
+    - typeName
+    type: object
+  user.EditForm:
+    properties:
+      avatar:
+        type: string
+      gender:
+        type: integer
+      id:
+        type: integer
+      nickName:
+        maxLength: 40
+        minLength: 4
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+      role:
+        type: integer
+      userAccount:
+        type: string
+    required:
+    - id
+    - nickName
+    type: object
+  user.ListForm:
+    properties:
+      nickName:
+        type: string
+      pageNo:
+        example: 1
+        minimum: 0
+        type: integer
+      pageSize:
+        example: 10
+        minimum: 0
+        type: integer
+      phoneNumber:
+        type: string
+      userAccount:
+        type: string
+    required:
+    - pageNo
+    - pageSize
+    type: object
+  user.LoginForm:
+    properties:
+      password:
+        example: "123456"
+        maxLength: 300
+        minLength: 6
+        type: string
+      userAccount:
+        example: admin@163.com
+        type: string
+    required:
+    - password
+    - userAccount
+    type: object
+  user.RegisterForm:
+    properties:
+      code:
+        maxLength: 6
+        minLength: 6
+        type: string
+      password:
+        maxLength: 20
+        minLength: 6
+        type: string
+      userAccount:
+        type: string
+    required:
+    - code
+    - password
+    - userAccount
+    type: object
+  user.VerificationCodeForm:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  utils.EmptyInfo:
+    type: object
+  utils.ResponseResultInfo:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
+info:
+  contact:
+    name: API Support
+paths:
+  /enum/delete:
+    delete:
+      consumes:
+      - application/json
+      description: 根据id删除指定枚举
+      parameters:
+      - description: 枚举id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据id删除指定枚举
+      tags:
+      - enum枚举
+  /enum/details:
+    get:
+      consumes:
+      - application/json
+      description: 获取枚举详情
+      parameters:
+      - description: 枚举id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取枚举详情
+      tags:
+      - enum枚举
+  /enum/getAllEnums:
+    get:
+      consumes:
+      - application/json
+      description: 获取全部数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      summary: 获取全部数据
+      tags:
+      - enum枚举
+  /enum/getEnumsByType:
+    get:
+      consumes:
+      - application/json
+      description: 根据分类查询枚举
+      parameters:
+      - description: 枚举类型code
+        in: query
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据分类查询枚举
+      tags:
+      - enum枚举
+  /enum/getEnumsList:
+    post:
+      consumes:
+      - application/json
+      description: 分页获取枚举列表
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/enum.ListForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      summary: 分页获取枚举列表
+      tags:
+      - enum枚举
+  /enum/save:
+    post:
+      consumes:
+      - application/json
+      description: 增加、编辑
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/enum.SaveForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 增加、编辑
+      tags:
+      - enum枚举
+  /file/upload:
+    post:
+      consumes:
+      - application/json
+      description: 文件上传
+      parameters:
+      - description: 请求对象
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 文件上传
+      tags:
+      - file文件
+  /user/details:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户详情
+      parameters:
+      - description: 用户id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户详情
+      tags:
+      - user用户
+  /user/edit:
+    post:
+      consumes:
+      - application/json
+      description: 编辑用户信息
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/user.EditForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 编辑用户信息
+      tags:
+      - user用户
+  /user/getUserList:
+    post:
+      consumes:
+      - application/json
+      description: 获取user用户列表
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/user.ListForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取user用户列表
+      tags:
+      - user用户
+  /user/getVerificationCode:
+    post:
+      consumes:
+      - application/json
+      description: 获取验证码
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/user.VerificationCodeForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      summary: 获取验证码
+      tags:
+      - user用户
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: 用户登陆
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      summary: 用户登陆
+      tags:
+      - user用户
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: 用户注册
+      parameters:
+      - description: 请求对象
+        in: body
+        name: param
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/utils.ResponseResultInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.EmptyInfo'
+      summary: 用户注册
+      tags:
+      - user用户
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
