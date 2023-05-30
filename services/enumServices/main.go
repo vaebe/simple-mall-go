@@ -86,7 +86,17 @@ func GetAllEnums() (map[string][]enum.SaveForm, error) {
 // GetEnumsList 分页获取枚举列表
 func GetEnumsList(listForm enum.ListForm) ([]enum.Enum, int32, error) {
 	var enums []enum.Enum
-	db := global.DB.Where("name LIKE ? AND type_name LIKE ?", "%"+listForm.Name+"%", "%"+listForm.TypeName+"%").Find(&enums)
+
+	db := global.DB
+	if listForm.Name != "" {
+		db = db.Where("name LIKE", "%"+listForm.Name+"%")
+	}
+
+	if listForm.TypeName != "" {
+		db = db.Where("type_name LIKE ?", "%"+listForm.TypeName+"%")
+	}
+
+	db = db.Find(&enums)
 
 	if db.Error != nil {
 		return enums, 0, db.Error
