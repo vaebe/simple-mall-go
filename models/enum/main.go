@@ -15,7 +15,7 @@ type Enum struct {
 
 // SaveForm 枚举保存表单
 type SaveForm struct {
-	ID       int32  `form:"id" json:"id" `
+	ID       int32  `form:"id" json:"id"`
 	Name     string `form:"name" json:"name" binding:"required"`
 	Code     string `form:"code" json:"code" binding:"required"`
 	TypeName string `form:"typeName" json:"typeName" binding:"required"`
