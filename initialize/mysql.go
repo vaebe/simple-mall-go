@@ -10,6 +10,7 @@ import (
 	"os"
 	"simple-mall/global"
 	"simple-mall/models/enum"
+	"simple-mall/models/role"
 	"simple-mall/models/user"
 	"time"
 )
@@ -47,6 +48,7 @@ func InitMysql() {
 		err = global.DB.AutoMigrate(
 			&user.User{},
 			&enum.Enum{},
+			&role.Role{},
 		)
 		// 自动建表
 		if err != nil {

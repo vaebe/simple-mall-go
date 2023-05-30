@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"simple-mall/routers/enum"
 	"simple-mall/routers/file"
+	"simple-mall/routers/role"
 	"simple-mall/routers/user"
 )
 
@@ -27,5 +28,6 @@ func LoadAllRouter(r *gin.Engine) {
 		user.LoadRouter(baseRouter)
 		enum.LoadRouter(baseRouter)
 		file.LoadRouter(baseRouter)
+		role.LoadRouter(baseRouter)
 	}
 }
