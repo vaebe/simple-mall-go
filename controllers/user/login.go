@@ -82,7 +82,7 @@ func loginSuccess(ctx *gin.Context, userInfo user.User) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		user.RegisterForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=user.User}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Router			/user/register [post]
 func Register(ctx *gin.Context) {
@@ -111,7 +111,7 @@ func Register(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		user.LoginForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=user.User}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Router			/user/login [post]
 func Login(ctx *gin.Context) {

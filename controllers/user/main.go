@@ -16,7 +16,7 @@ import (
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		user.ListForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=[]user.User}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/user/getUserList [post]
@@ -49,7 +49,7 @@ func GetUserList(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	query		string	true	"用户id"
-//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Success		200	{object}	utils.ResponseResultInfo{data=user.User}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/user/details [get]
