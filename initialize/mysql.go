@@ -10,9 +10,11 @@ import (
 	"os"
 	"simple-mall/global"
 	"simple-mall/models/enum"
+	"simple-mall/models/order"
 	"simple-mall/models/product"
 	"simple-mall/models/productCategory"
 	"simple-mall/models/role"
+	"simple-mall/models/shoppingCart"
 	"simple-mall/models/user"
 	"time"
 )
@@ -53,6 +55,9 @@ func InitMysql() {
 			&role.Role{},
 			&product.Product{},
 			&productCategory.ProductCategory{},
+			shoppingCart.ShoppingCart{},
+			order.Order{},
+			order.OrderDetails{},
 		)
 		// 自动建表
 		if err != nil {
