@@ -7,6 +7,7 @@ import (
 	"simple-mall/routers/product"
 	"simple-mall/routers/productCategory"
 	"simple-mall/routers/role"
+	"simple-mall/routers/shoppingCart"
 	"simple-mall/routers/user"
 )
 
@@ -33,5 +34,6 @@ func LoadAllRouter(r *gin.Engine) {
 		role.LoadRouter(baseRouter)
 		product.LoadRouter(baseRouter)
 		productCategory.LoadRouter(baseRouter)
+		shoppingCart.LoadRouter(baseRouter)
 	}
 }
