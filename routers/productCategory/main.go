@@ -5,7 +5,7 @@ import (
 	"simple-mall/controllers/productCategory"
 )
 
-// LoadRouter 加载枚举路由
+// LoadRouter 加载商品分类路由
 func LoadRouter(r *gin.RouterGroup) {
 	routes := r.Group("productCategory")
 	{

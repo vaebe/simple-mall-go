@@ -16,7 +16,7 @@ import (
 // 解密过程相反
 
 // PwdKey 16,24,32位字符串的话，分别对应AES-128，AES-192，AES-256 加密方法
-var PwdKey = []byte("Mk-PASSWORD-5310")
+var PwdKey = []byte("SM-PASSWORD-5310")
 
 // pkcs7Padding 填充
 func pkcs7Padding(data []byte, blockSize int) []byte {
