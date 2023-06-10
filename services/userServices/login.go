@@ -25,7 +25,7 @@ func Register(registerForm user.RegisterForm) (user.User, error) {
 
 	// 生成不带 - 的uuid
 	uuidObj := uuid.New()
-	uuidStr := fmt.Sprintf("simple-mall%x", uuidObj[:])
+	uuidStr := fmt.Sprintf("mall%x", uuidObj[:])
 
 	pwdStr, err := password.EncryptByAes([]byte(registerForm.PassWord))
 

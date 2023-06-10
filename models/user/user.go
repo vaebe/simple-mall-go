@@ -9,7 +9,7 @@ type User struct {
 	NickName    string `gorm:"type:varbinary(40);unique;not null;comment '昵称'" json:"nickName"`
 	UserAccount string `gorm:"type:varbinary(50);unique;not null;comment '用户账号'" json:"userAccount"`
 	Password    string `gorm:"type:varbinary(300);not null;comment '密码'" json:"password"`
-	PhoneNumber string `gorm:"type:varbinary(20);unique; comment '手机号'" json:"phoneNumber"`
+	PhoneNumber string `gorm:"type:varbinary(15); comment '手机号'" json:"phoneNumber"`
 	Gender      int32  `gorm:"type:int;default:2;comment '性别 0女 1男 2未知'" json:"gender"`
 	Avatar      string `gorm:"type:varbinary(300);not null;comment '用户头像'" json:"avatar"`
 	Role        int32  `gorm:"type:int;default:2;comment '角色表定义 1 管理员 2 普通用户'" json:"role"`
