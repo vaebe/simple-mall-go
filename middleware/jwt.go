@@ -105,7 +105,7 @@ func JWTAuth(whitelist []string) gin.HandlerFunc {
 		token := c.Request.Header.Get("authorization")
 
 		if token == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{
+			c.JSON(http.StatusOK, gin.H{
 				"code": 401,
 				"msg":  "token不存在！",
 			})
