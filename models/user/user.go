@@ -1,6 +1,8 @@
 package user
 
-import "simple-mall/models"
+import (
+	"simple-mall/models"
+)
 
 type User struct {
 	models.BaseModel
@@ -49,4 +51,11 @@ type ListForm struct {
 	UserAccount string `json:"userAccount" form:"userAccount"`
 	NickName    string `json:"nickName" form:"nickName"`
 	PhoneNumber string `json:"phoneNumber" form:"phoneNumber"`
+}
+
+// LoginResultsData 登录返回数据
+type LoginResultsData struct {
+	UserInfo  User   `json:"userInfo"`
+	Token     string `json:"token"`
+	ExpiredAt int64  `json:"expired_at"`
 }

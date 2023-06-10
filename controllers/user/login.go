@@ -57,13 +57,7 @@ func loginSuccess(ctx *gin.Context, userInfo user.User) {
 		return
 	}
 
-	type ResultsData struct {
-		UserInfo  user.User `json:"userInfo"`
-		Token     string    `json:"token"`
-		ExpiredAt int64     `json:"expired_at"`
-	}
-
-	resultsData := ResultsData{
+	resultsData := user.LoginResultsData{
 		UserInfo:  userInfo,
 		Token:     token,
 		ExpiredAt: (time.Now().Unix() + 60*60*24*30) * 1000,
@@ -82,7 +76,7 @@ func loginSuccess(ctx *gin.Context, userInfo user.User) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		user.RegisterForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo{data=user.User}
+//	@Success		200		{object}	utils.ResponseResultInfo{data=user.LoginResultsData}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Router			/user/register [post]
 func Register(ctx *gin.Context) {
@@ -111,7 +105,7 @@ func Register(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		user.LoginForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo{data=user.User}
+//	@Success		200		{object}	utils.ResponseResultInfo{data=user.LoginResultsData}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Router			/user/login [post]
 func Login(ctx *gin.Context) {
