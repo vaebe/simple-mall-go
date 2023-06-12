@@ -11,7 +11,7 @@ func IsAdmin() gin.HandlerFunc {
 		// 获取jwt验证后设置的用户信息
 		authorityId, _ := ctx.Get("authorityId")
 
-		if authorityId.(int32) != 1 {
+		if authorityId != "00" {
 			utils.ResponseResultsError(ctx, "用户无权限！")
 			ctx.Abort()
 			return
