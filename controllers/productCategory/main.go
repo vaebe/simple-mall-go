@@ -72,7 +72,7 @@ func Delete(ctx *gin.Context) {
 //	@Tags			productCategory商品分类
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Success		200	{object}	utils.ResponseResultInfo{data=[]productCategory.ProductCategory}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/productCategory/getAllProductCategory [get]
@@ -94,7 +94,7 @@ func GetAllProductCategory(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		productCategory.ListForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=models.PagingData{list=[]productCategory.ProductCategory}}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/productCategory/getProductCategoryList [post]

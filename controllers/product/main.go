@@ -72,8 +72,8 @@ func Delete(ctx *gin.Context) {
 //	@Tags			product商品
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	query		int	true	"枚举id"
-//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Param			id	query		int	true	"商品id"
+//	@Success		200	{object}	utils.ResponseResultInfo{data=product.Product}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/product/details [get]
@@ -102,7 +102,7 @@ func Details(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		product.ListForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=models.PagingData{list=[]product.Product}}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/product/getProductList [post]

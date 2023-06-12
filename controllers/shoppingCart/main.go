@@ -71,7 +71,7 @@ func Delete(ctx *gin.Context) {
 //	@Tags			shoppingCart购物车
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	utils.ResponseResultInfo{data=shoppingCart.SaveForm}
+//	@Success		200	{object}	utils.ResponseResultInfo{data=[]shoppingCart.ShoppingCart}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/shoppingCart/getShoppingCartInfoByUserId [get]

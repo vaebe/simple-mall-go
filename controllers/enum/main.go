@@ -73,7 +73,7 @@ func Delete(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	query		int	true	"枚举id"
-//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Success		200	{object}	utils.ResponseResultInfo{data=enum.SaveForm}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/enum/details [get]
@@ -102,7 +102,7 @@ func Details(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			type	query		string	true	"枚举类型code"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=[]enum.SaveForm}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/enum/getEnumsByType [get]
@@ -130,7 +130,7 @@ func GetEnumsByType(ctx *gin.Context) {
 //	@Tags			enum枚举
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Success		200	{object}	utils.ResponseResultInfo{data=map[string][]enum.SaveForm}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Router			/enum/getAllEnums [get]
 func GetAllEnums(ctx *gin.Context) {
@@ -151,7 +151,7 @@ func GetAllEnums(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		enum.ListForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=models.PagingData{list=[]enum.Enum}}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Router			/enum/getEnumsList [post]
 func GetEnumsList(ctx *gin.Context) {
