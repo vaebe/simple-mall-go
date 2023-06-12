@@ -38,7 +38,7 @@ func Register(registerForm user.RegisterForm) (user.User, error) {
 		Avatar:      "https://cdn.qiniu.vaebe.top/simple-mall/avatar_default.png",
 		UserAccount: registerForm.UserAccount,
 		Password:    pwdStr,
-		Gender:      2,
+		Gender:      "02",
 	}
 	res := global.DB.Create(&userInfo)
 

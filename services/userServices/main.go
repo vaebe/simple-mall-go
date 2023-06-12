@@ -1,6 +1,7 @@
 package userServices
 
 import (
+	"errors"
 	"go.uber.org/zap"
 	"simple-mall/global"
 	"simple-mall/models/user"
@@ -58,18 +59,39 @@ func GetUserDetails(userId string) (user.User, error) {
 	return userInfo, nil
 }
 
-// Edit 编辑用户信息
-func Edit(editForm user.EditForm, userId int32) error {
+// CreateAndUpdate 创建或更新用户信息
+func CreateAndUpdate(saveForm user.SaveForm) (int32, error) {
+	saveInfo := user.User{
+		NickName:    saveForm.NickName,
+		UserAccount: saveForm.UserAccount,
+		PhoneNumber: saveForm.PhoneNumber,
+		Avatar:      saveForm.Avatar,
+		Gender:      saveForm.Gender,
+		Role:        saveForm.Role,
+	}
 
-	res := global.DB.Where("id = ?", userId).Updates(&user.User{
-		NickName:    editForm.NickName,
-		Avatar:      editForm.Avatar,
-		PhoneNumber: editForm.PhoneNumber,
-		Gender:      editForm.Gender,
-	})
+	// id 不存在新增
+	db := global.DB
+	if saveForm.ID == 0 {
+		saveInfo.Password = saveForm.Password
+		db = db.Create(&saveInfo)
+	} else {
+		db = db.Model(&user.User{}).Where("id = ?", saveForm.ID).Updates(&saveInfo)
+	}
 
-	if res.RowsAffected == 0 {
-		return res.Error
+	if db.Error != nil {
+		return 0, db.Error
+	}
+
+	return saveInfo.ID, nil
+}
+
+// Delete 删除用户
+func Delete(userId string) error {
+	db := global.DB.Where("id = ?", userId).Delete(&user.User{})
+
+	if db.RowsAffected == 0 {
+		return errors.New("需要删除的数据不存在")
 	}
 
 	return nil

@@ -16,7 +16,7 @@ import (
 //	@Accept			json
 //	@Produce		json
 //	@Param			param	body		user.ListForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo{data=[]user.User}
+//	@Success		200		{object}	utils.ResponseResultInfo{data=models.PagingData{list=[]user.User}}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/user/getUserList [post]
@@ -70,36 +70,59 @@ func Details(ctx *gin.Context) {
 	utils.ResponseResultsSuccess(ctx, userInfo)
 }
 
-// Edit
+// Save
 //
-//	@Summary		编辑用户信息
-//	@Description	编辑用户信息
+//	@Summary		增加、编辑
+//	@Description	增加、编辑
 //	@Tags			user用户
 //	@Accept			json
 //	@Produce		json
-//	@Param			param	body		user.EditForm	true	"请求对象"
+//	@Param			param	body		user.SaveForm	true	"请求对象"
 //	@Success		200		{object}	utils.ResponseResultInfo
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
-//	@Router			/user/edit [post]
-func Edit(ctx *gin.Context) {
-	editForm := user.EditForm{}
-	if err := ctx.ShouldBind(&editForm); err != nil {
+//	@Router			/user/save [post]
+func Save(ctx *gin.Context) {
+	saveForm := user.SaveForm{}
+	if err := ctx.ShouldBind(&saveForm); err != nil {
 		utils.HandleValidatorError(ctx, err)
 		return
 	}
 
-	userId, _ := ctx.Get("userId")
-	if editForm.ID != userId {
-		utils.ResponseResultsError(ctx, "非本人不可修改用户信息！")
-		return
-	}
-
-	err := userServices.Edit(editForm, userId.(int32))
+	id, err := userServices.CreateAndUpdate(saveForm)
 	if err != nil {
 		utils.ResponseResultsError(ctx, err.Error())
 		return
 	}
 
-	utils.ResponseResultsSuccess(ctx, "更新用户信息成功！")
+	utils.ResponseResultsSuccess(ctx, map[string]any{"id": id})
+}
+
+// Delete
+//
+//	@Summary		根据id删除用户
+//	@Description	根据id删除用户
+//	@Tags			user用户
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	query		int	true	"用户id"
+//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Failure		500	{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
+//	@Router			/user/delete [delete]
+func Delete(ctx *gin.Context) {
+	userId := ctx.Query("id")
+
+	if userId == "" {
+		utils.ResponseResultsError(ctx, "用户id不能为空！")
+		return
+	}
+
+	err := userServices.Delete(userId)
+	if err != nil {
+		utils.ResponseResultsError(ctx, err.Error())
+		return
+	}
+
+	utils.ResponseResultsSuccess(ctx, "删除成功！")
 }

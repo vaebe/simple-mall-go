@@ -10,9 +10,9 @@ type User struct {
 	UserAccount string `gorm:"type:varbinary(50);unique;not null;comment '用户账号'" json:"userAccount"`
 	Password    string `gorm:"type:varbinary(300);not null;comment '密码'" json:"password"`
 	PhoneNumber string `gorm:"type:varbinary(15); comment '手机号'" json:"phoneNumber"`
-	Gender      int32  `gorm:"type:int;default:2;comment '性别 0女 1男 2未知'" json:"gender"`
+	Gender      string `gorm:"type:varbinary(15);default:02;comment '性别 00女 01男 02未知'" json:"gender"`
 	Avatar      string `gorm:"type:varbinary(300);not null;comment '用户头像'" json:"avatar"`
-	Role        int32  `gorm:"type:int;default:2;comment '角色表定义 1 管理员 2 普通用户'" json:"role"`
+	Role        string `gorm:"type:varbinary(15);default:02;comment '角色表定义 00 管理员 02 普通用户'" json:"role"`
 }
 
 // VerificationCodeForm 发送验证码
@@ -20,16 +20,16 @@ type VerificationCodeForm struct {
 	Email string `form:"email" json:"email" binding:"required,email"`
 }
 
-// EditForm 用户信息编辑
-type EditForm struct {
-	ID          int32  `json:"id" form:"id" binding:"required"`
+// SaveForm 用户信息保存表单
+type SaveForm struct {
+	ID          int32  `json:"id" form:"id"`
 	NickName    string `json:"nickName" form:"nickName" binding:"required,min=4,max=40"`
 	UserAccount string `json:"userAccount" form:"userAccount"`
 	Password    string `json:"password" form:"password"`
 	PhoneNumber string `json:"phoneNumber" form:"phoneNumber"`
-	Gender      int32  `json:"gender" form:"gender"`
+	Gender      string `json:"gender" form:"gender"`
 	Avatar      string `json:"avatar" form:"avatar"`
-	Role        int32  `json:"role" form:"role"`
+	Role        string `json:"role" form:"role"`
 }
 
 // RegisterForm 注册
