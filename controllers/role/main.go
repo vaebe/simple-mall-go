@@ -13,7 +13,7 @@ import (
 //	@Tags				role角色
 //	@Accept			json
 //	@Produce		json
-//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Success		200		{object}	utils.ResponseResultInfo{data=[]role.Role}
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/role/getRoleList [get]
