@@ -89,7 +89,7 @@ func GetEnumsList(listForm enum.ListForm) ([]enum.Enum, int32, error) {
 
 	db := global.DB
 	if listForm.Name != "" {
-		db = db.Where("name LIKE", "%"+listForm.Name+"%")
+		db = db.Where("name LIKE ?", "%"+listForm.Name+"%")
 	}
 
 	if listForm.TypeName != "" {
