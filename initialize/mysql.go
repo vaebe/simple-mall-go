@@ -54,6 +54,7 @@ func InitMysql() {
 			&enum.Enum{},
 			&role.Role{},
 			&product.Product{},
+			&product.ProductImageLink{},
 			&productCategory.ProductCategory{},
 			shoppingCart.ShoppingCart{},
 			order.Order{},
