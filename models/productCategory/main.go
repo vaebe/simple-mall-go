@@ -5,9 +5,10 @@ import "simple-mall/models"
 // ProductCategory 商品分类表
 type ProductCategory struct {
 	models.BaseModel
-	Code string `gorm:"type:varbinary(50); not null; comment '商品分类code'" json:"code"`
 	Name string `gorm:"type:varbinary(50); not null; comment '商品分类名称'" json:"name"`
+	Code string `gorm:"type:varbinary(50); not null; comment '商品分类code'" json:"code"`
 	Sort int32  `gorm:"type:int;default:1;unique;comment '排序'" json:"sort"`
+	Icon string `gorm:"type:varbinary(300); comment '商品分类icon'" json:"icon"`
 }
 
 // SaveForm 商品分类表保存表单
