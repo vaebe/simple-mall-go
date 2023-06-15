@@ -12,10 +12,10 @@ import (
 func CreateAndUpdate(saveForm product.SaveForm) (int32, error) {
 	saveInfo := product.Product{
 		Name:              saveForm.Name,
-		Picture:           saveForm.Picture,
 		Price:             saveForm.Price,
 		Info:              saveForm.Info,
 		Stock:             saveForm.Stock,
+		Pictures:          saveForm.Pictures,
 		ProductCategoryId: saveForm.ProductCategoryId,
 	}
 
@@ -48,7 +48,7 @@ func Delete(productId string) error {
 // Details 获取商品详情
 func Details(productId string) (product.Product, error) {
 	info := product.Product{}
-	db := global.DB.Model(&enum.Enum{}).Where("id = ?", productId).First(&info)
+	db := global.DB.Model(&enum.Enum{}).Preload("Pictures").Where("id = ?", productId).First(&info)
 	return info, db.Error
 }
 
@@ -56,9 +56,9 @@ func Details(productId string) (product.Product, error) {
 func GetProductList(listForm product.ListForm) ([]product.Product, int32, error) {
 	var list []product.Product
 
-	db := global.DB
+	db := global.DB.Preload("Pictures")
 	if listForm.Name != "" {
-		db = db.Where("name LIKE", "%"+listForm.Name+"%")
+		db = db.Where("name LIKE ?", "%"+listForm.Name+"%")
 	}
 	db = db.Find(&list)
 
