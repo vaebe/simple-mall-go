@@ -2,6 +2,7 @@ package productServices
 
 import (
 	"errors"
+	"gorm.io/gorm"
 	"simple-mall/global"
 	"simple-mall/models/enum"
 	"simple-mall/models/product"
@@ -20,18 +21,36 @@ func CreateAndUpdate(saveForm product.SaveForm) (int32, error) {
 	}
 
 	// id 不存在新增
-	db := global.DB
 	if saveForm.ID == 0 {
-		db = db.Create(&saveInfo)
+		db := global.DB.Save(&saveInfo)
+		return saveInfo.ID, db.Error
 	} else {
-		db = db.Model(&product.Product{}).Where("id = ?", saveForm.ID).Updates(&saveInfo)
-	}
+		saveInfo.ID = saveForm.ID
 
-	if db.Error != nil {
-		return 0, db.Error
-	}
+		err := global.DB.Transaction(func(tx *gorm.DB) error {
+			// 删除旧的关联数据，这里只是清除了关联关系
+			// 如果旧数据不需要留存可以直接硬删除，下边添加新的关联数据的逻辑也不再需要，Updates 会自动增加关联数据
+			if err := tx.Model(&saveInfo).Association("Pictures").Clear(); err != nil {
+				return err
+			}
 
-	return saveInfo.ID, nil
+			// 添加新的关联数据
+			if len(saveForm.Pictures) > 0 {
+				if err := tx.Model(&saveInfo).Association("Pictures").Append(saveForm.Pictures); err != nil {
+					return err
+				}
+			}
+
+			// 更新信息
+			if err := tx.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&saveInfo).Error; err != nil {
+				return err
+			}
+
+			return nil
+		})
+
+		return saveInfo.ID, err
+	}
 }
 
 // Delete 删除商品
