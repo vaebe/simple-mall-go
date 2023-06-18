@@ -2,6 +2,7 @@ package localTime
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -11,6 +12,19 @@ type LocalTime time.Time
 func (t *LocalTime) MarshalJSON() ([]byte, error) {
 	tTime := time.Time(*t)
 	return []byte(fmt.Sprintf("\"%v\"", tTime.Format("2006-01-02 15:04:05"))), nil
+}
+
+func (t *LocalTime) UnmarshalJSON(data []byte) error {
+	var str string
+	if err := json.Unmarshal(data, &str); err != nil {
+		return err
+	}
+	parsedTime, err := time.Parse("2006-01-02 15:04:05", str)
+	if err != nil {
+		return fmt.Errorf("failed to parse LocalTime: %v", err)
+	}
+	*t = LocalTime(parsedTime)
+	return nil
 }
 
 func (t LocalTime) Value() (driver.Value, error) {
