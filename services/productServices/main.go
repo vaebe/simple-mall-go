@@ -17,6 +17,8 @@ func CreateAndUpdate(saveForm product.SaveForm) (int32, error) {
 		Info:              saveForm.Info,
 		Stock:             saveForm.Stock,
 		Pictures:          saveForm.Pictures,
+		DetailImages:      saveForm.DetailImages,
+		ParameterImages:   saveForm.ParameterImages,
 		ProductCategoryId: saveForm.ProductCategoryId,
 	}
 

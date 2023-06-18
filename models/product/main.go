@@ -19,6 +19,8 @@ type Product struct {
 	Price             int32              `gorm:"type:int; default:0; comment '商品价格'" json:"price"`
 	Stock             int32              `gorm:"type:int; default:1; comment '商品库存'" json:"stock"`
 	Info              string             `gorm:"type:varbinary(300); not null; comment '商品简介'" json:"info"`
+	DetailImages      string             `gorm:"type:text; comment '商品详情图片列表'" json:"detailImages"`
+	ParameterImages   string             `gorm:"type:text; comment '商品参数列表'" json:"parameterImages"`
 	ProductCategoryId int32              `gorm:"type:int; not null; comment '商品分类id'" json:"productCategoryId"`
 	Pictures          []ProductImageLink `json:"pictures"`
 }
@@ -31,6 +33,8 @@ type SaveForm struct {
 	Pictures          []ProductImageLink `form:"pictures" json:"pictures" binding:"required"`
 	Stock             int32              `form:"stock" json:"stock" binding:"required"`
 	Info              string             `form:"info" json:"info" binding:"required"`
+	DetailImages      string             `form:"detailImages" json:"detailImages"`
+	ParameterImages   string             `form:"parameterImages" json:"parameterImages"`
 	ProductCategoryId int32              `form:"productCategoryId" json:"productCategoryId" binding:"required"`
 }
 
