@@ -81,6 +81,11 @@ func GetProductList(listForm product.ListForm) ([]product.Product, int32, error)
 	if listForm.Name != "" {
 		db = db.Where("name LIKE ?", "%"+listForm.Name+"%")
 	}
+
+	if listForm.ProductCategoryId != 0 {
+		db = db.Where("product_category_id = ?", listForm.ProductCategoryId)
+	}
+
 	db = db.Find(&list)
 
 	if db.Error != nil {

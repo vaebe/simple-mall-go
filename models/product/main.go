@@ -41,5 +41,6 @@ type SaveForm struct {
 // ListForm 商品表分页查询参数
 type ListForm struct {
 	models.PaginationParameters
-	Name string `json:"name" form:"name"`
+	Name              string `json:"name" form:"name"`
+	ProductCategoryId int32  `json:"productCategoryId" form:"productCategoryId"`
 }
