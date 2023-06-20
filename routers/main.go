@@ -21,6 +21,8 @@ func GetRouterWhiteList() []string {
 		"/api/enum/getAllEnums",
 		"/swagger/index.html",
 		"/favicon.ico",
+
+		"/api/productCategory/getAllProductCategory",
 	}
 }
 
