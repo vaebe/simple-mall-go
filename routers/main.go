@@ -2,13 +2,14 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"simple-mall/routers/enum"
-	"simple-mall/routers/file"
-	"simple-mall/routers/product"
-	"simple-mall/routers/productCategory"
-	"simple-mall/routers/role"
-	"simple-mall/routers/shoppingCart"
-	"simple-mall/routers/user"
+	"simple-mall/controllers/enum"
+	"simple-mall/controllers/file"
+	"simple-mall/controllers/product"
+	"simple-mall/controllers/productCategory"
+	"simple-mall/controllers/role"
+	"simple-mall/controllers/shoppingCart"
+	"simple-mall/controllers/user"
+	middlewares "simple-mall/middleware"
 )
 
 // GetRouterWhiteList 获取路由白名单
@@ -23,6 +24,84 @@ func GetRouterWhiteList() []string {
 		"/favicon.ico",
 
 		"/api/productCategory/getAllProductCategory",
+		"/api/enum/getEnumsByType",
+		"/api/enum/getAllEnums",
+	}
+}
+
+// enumLoadRouter 加载枚举路由
+func enumLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("enum")
+	{
+		routes.POST("/save", enum.Save)
+		routes.DELETE("/delete", enum.Delete)
+		routes.GET("/details", enum.Details)
+		routes.GET("/getEnumsByType", enum.GetEnumsByType)
+		routes.GET("/getAllEnums", enum.GetAllEnums)
+		routes.POST("/getEnumsList", enum.GetEnumsList)
+	}
+}
+
+// fileLoadRouter 加载文件操作路由
+func fileLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("file")
+	{
+		routes.POST("/upload", file.Upload)
+	}
+}
+
+// productLoadRouter 加载商品路由
+func productLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("product")
+	{
+		routes.POST("/save", product.Save)
+		routes.DELETE("/delete", product.Delete)
+		routes.GET("/details", product.Details)
+		routes.POST("/getProductList", product.GetProductList)
+	}
+}
+
+// productCategoryLoadRouter 加载商品分类路由
+func productCategoryLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("productCategory")
+	{
+		routes.POST("/save", productCategory.Save)
+		routes.DELETE("/delete", productCategory.Delete)
+		routes.GET("/getAllProductCategory", productCategory.GetAllProductCategory)
+		routes.POST("/getProductCategoryList", productCategory.GetProductCategoryList)
+	}
+}
+
+// roleLoadRouter 加载角色路由
+func roleLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("role")
+	{
+		routes.GET("/getRoleList", role.GetRoleList)
+	}
+}
+
+// shoppingCartLoadRouter 加载商品分类路由
+func shoppingCartLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("shoppingCart")
+	{
+		routes.POST("/save", shoppingCart.Save)
+		routes.DELETE("/delete", shoppingCart.Delete)
+		routes.GET("/getShoppingCartInfoByUserId", shoppingCart.GetShoppingCartInfoByUserId)
+	}
+}
+
+// userLoadRouter 加载用户信息路由
+func userLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("user")
+	{
+		routes.POST("/login", user.Login)
+		routes.POST("/register", user.Register)
+		routes.POST("/getVerificationCode", user.GetVerificationCode)
+		routes.GET("/details", user.Details)
+		routes.POST("/save", user.Save)
+		routes.DELETE("/delete", user.Delete)
+		// 非管理员不能获取用户列表
+		routes.POST("/getUserList", middlewares.IsAdmin(), user.GetUserList)
 	}
 }
 
@@ -30,12 +109,12 @@ func GetRouterWhiteList() []string {
 func LoadAllRouter(r *gin.Engine) {
 	baseRouter := r.Group("/api")
 	{
-		user.LoadRouter(baseRouter)
-		enum.LoadRouter(baseRouter)
-		file.LoadRouter(baseRouter)
-		role.LoadRouter(baseRouter)
-		product.LoadRouter(baseRouter)
-		productCategory.LoadRouter(baseRouter)
-		shoppingCart.LoadRouter(baseRouter)
+		enumLoadRouter(baseRouter)
+		fileLoadRouter(baseRouter)
+		productLoadRouter(baseRouter)
+		productCategoryLoadRouter(baseRouter)
+		roleLoadRouter(baseRouter)
+		shoppingCartLoadRouter(baseRouter)
+		userLoadRouter(baseRouter)
 	}
 }
