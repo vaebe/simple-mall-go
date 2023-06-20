@@ -7,7 +7,7 @@ import (
 
 // BaseModel 基础数据
 type BaseModel struct {
-	ID        int32                 `gorm:"primaryKey; auto_increment:121020106; comment '主键'" json:"id"`
+	ID        int32                 `gorm:"primaryKey; auto_increment; comment '主键'" json:"id"`
 	CreatedAt *localTime.LocalTime  `gorm:"column=created_at; comment '创建时间'" json:"createdAt"`
 	UpdatedAt *localTime.LocalTime  `gorm:"column=updated_at; comment '更新时间'" json:"updatedAt"`
 	DeletedAt *localTime.LocalTime  `gorm:"column=deleted_at; default:null; comment '删除时间'" json:"-"`

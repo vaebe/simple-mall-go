@@ -8,6 +8,7 @@ import (
 	"simple-mall/controllers/productCategory"
 	"simple-mall/controllers/role"
 	"simple-mall/controllers/shoppingCart"
+	"simple-mall/controllers/slideshow"
 	"simple-mall/controllers/user"
 	middlewares "simple-mall/middleware"
 )
@@ -26,6 +27,7 @@ func GetRouterWhiteList() []string {
 		"/api/productCategory/getAllProductCategory",
 		"/api/enum/getEnumsByType",
 		"/api/enum/getAllEnums",
+		"/api/slideshow/getSlideshowsByType",
 	}
 }
 
@@ -105,6 +107,18 @@ func userLoadRouter(r *gin.RouterGroup) {
 	}
 }
 
+// slideshowLoadRouter 加载轮播图路由
+func slideshowLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("slideshow")
+	{
+		routes.GET("/getSlideshowsByType", slideshow.GetSlideshowsByType)
+		routes.POST("/getSlideshowsList", slideshow.GetSlideshowsList)
+		routes.GET("/details", slideshow.Details)
+		routes.POST("/save", slideshow.Save)
+		routes.DELETE("/delete", slideshow.Delete)
+	}
+}
+
 // LoadAllRouter 加载全部路由
 func LoadAllRouter(r *gin.Engine) {
 	baseRouter := r.Group("/api")
@@ -116,5 +130,6 @@ func LoadAllRouter(r *gin.Engine) {
 		roleLoadRouter(baseRouter)
 		shoppingCartLoadRouter(baseRouter)
 		userLoadRouter(baseRouter)
+		slideshowLoadRouter(baseRouter)
 	}
 }
