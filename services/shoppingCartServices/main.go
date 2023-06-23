@@ -29,9 +29,9 @@ func CreateAndUpdate(saveForm shoppingCart.SaveForm) (int32, error) {
 	return saveInfo.ID, nil
 }
 
-// Delete 删除购物车
-func Delete(shoppingCartId string) error {
-	db := global.DB.Where("id = ?", shoppingCartId).Delete(&shoppingCart.ShoppingCart{})
+// DeleteShoppingCartProduct 删除购物车商品
+func DeleteShoppingCartProduct(shoppingCartId string, productId string) error {
+	db := global.DB.Where("id = ?, product_id = ?", shoppingCartId, productId).Delete(&shoppingCart.ShoppingCart{})
 
 	if db.RowsAffected == 0 {
 		return errors.New("需要删除的数据不存在")

@@ -90,7 +90,7 @@ func shoppingCartLoadRouter(r *gin.RouterGroup) {
 	routes := r.Group("shoppingCart")
 	{
 		routes.POST("/save", shoppingCart.Save)
-		routes.DELETE("/delete", shoppingCart.Delete)
+		routes.DELETE("/deleteShoppingCartProduct", shoppingCart.DeleteShoppingCartProduct)
 		routes.GET("/getShoppingCartInfoByUserId", shoppingCart.GetShoppingCartInfoByUserId)
 	}
 }

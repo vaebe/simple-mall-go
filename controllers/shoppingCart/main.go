@@ -35,27 +35,33 @@ func Save(ctx *gin.Context) {
 	utils.ResponseResultsSuccess(ctx, map[string]any{"id": id})
 }
 
-// Delete
+// DeleteShoppingCartProduct
 //
-//	@Summary		购物车删除
-//	@Description	购物车删除
+//	@Summary		删除购物车商品
+//	@Description	删除购物车商品
 //	@Tags			shoppingCart购物车
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	query		int	true	"购物车id"
+//	@Param			productId	query		int	true	"商品id"
 //	@Success		200	{object}	utils.ResponseResultInfo
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
-//	@Router			/shoppingCart/delete [delete]
-func Delete(ctx *gin.Context) {
+//	@Router			/shoppingCart/deleteShoppingCartProduct [delete]
+func DeleteShoppingCartProduct(ctx *gin.Context) {
 	shoppingCartId := ctx.Query("id")
-
 	if shoppingCartId == "" {
-		utils.ResponseResultsError(ctx, "购物车id不能为空！")
+		utils.ResponseResultsError(ctx, "购物车 id 不能为空！")
 		return
 	}
 
-	err := shoppingCartServices.Delete(shoppingCartId)
+	productId := ctx.Query("productId")
+	if productId == "" {
+		utils.ResponseResultsError(ctx, "商品 id 不能为空！")
+		return
+	}
+
+	err := shoppingCartServices.DeleteShoppingCartProduct(shoppingCartId, productId)
 	if err != nil {
 		utils.ResponseResultsError(ctx, err.Error())
 		return
