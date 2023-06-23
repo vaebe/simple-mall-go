@@ -24,9 +24,11 @@ func GetRouterWhiteList() []string {
 		"/swagger/index.html",
 		"/favicon.ico",
 
+		"/api/product/getRandomRecommendedProductList",
 		"/api/productCategory/getAllProductCategory",
 		"/api/enum/getEnumsByType",
 		"/api/enum/getAllEnums",
+		"/api/slideshow/getSlideshowsByType",
 		"/api/slideshow/getSlideshowsByType",
 	}
 }
@@ -60,6 +62,7 @@ func productLoadRouter(r *gin.RouterGroup) {
 		routes.DELETE("/delete", product.Delete)
 		routes.GET("/details", product.Details)
 		routes.POST("/getProductList", product.GetProductList)
+		routes.GET("/getRandomRecommendedProductList", product.GetRandomRecommendedProductList)
 	}
 }
 

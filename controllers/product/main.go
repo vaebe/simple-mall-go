@@ -2,10 +2,12 @@ package product
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"simple-mall/models"
 	"simple-mall/models/product"
 	"simple-mall/services/productServices"
 	"simple-mall/utils"
+	"strconv"
 )
 
 // Save
@@ -126,4 +128,32 @@ func GetProductList(ctx *gin.Context) {
 		Total:    total,
 		List:     list,
 	})
+}
+
+// GetRandomRecommendedProductList
+//
+//	@Summary		获取随机推荐商品列表
+//	@Description	获取随机推荐商品列表
+//	@Tags			product商品
+//	@Accept			json
+//	@Produce		json
+//	@Param			total	query		int	true	"数量" default(20) maximum(40)
+//	@Success		200		{object}	utils.ResponseResultInfo{data=[]product.Product}
+//	@Failure		500		{object}	utils.EmptyInfo
+//	@Router			/product/getRandomRecommendedProductList [get]
+func GetRandomRecommendedProductList(ctx *gin.Context) {
+	total, _ := strconv.Atoi(ctx.Query("total"))
+	if total > 40 {
+		utils.ResponseResultsError(ctx, "获取推荐商品总数不能大于 40")
+		return
+	}
+
+	list, err := productServices.GetRandomRecommendedProductList(total)
+	if err != nil {
+		zap.S().Info("获取随机推荐商品列表:", err)
+		utils.ResponseResultsError(ctx, "获取数据失败")
+		return
+	}
+
+	utils.ResponseResultsSuccess(ctx, list)
 }

@@ -104,3 +104,10 @@ func GetProductList(listForm product.ListForm) ([]product.Product, int32, error)
 
 	return list, total, nil
 }
+
+// GetRandomRecommendedProductList 获取随机推荐商品列表
+func GetRandomRecommendedProductList(total int) ([]product.Product, error) {
+	var list []product.Product
+	db := global.DB.Preload("Pictures").Order("RAND()").Limit(total).Find(&list)
+	return list, db.Error
+}
