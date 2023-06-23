@@ -77,7 +77,7 @@ func Details(productId string) (product.Product, error) {
 func GetProductList(listForm product.ListForm) ([]product.Product, int32, error) {
 	var list []product.Product
 
-	db := global.DB.Preload("Pictures")
+	db := global.DB
 	if listForm.Name != "" {
 		db = db.Where("name LIKE ?", "%"+listForm.Name+"%")
 	}
@@ -96,7 +96,7 @@ func GetProductList(listForm product.ListForm) ([]product.Product, int32, error)
 	total := int32(db.RowsAffected)
 
 	// 分页
-	db = db.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Find(&list)
+	db = db.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Pictures").Find(&list)
 
 	if db.Error != nil {
 		return list, 0, db.Error
@@ -108,6 +108,6 @@ func GetProductList(listForm product.ListForm) ([]product.Product, int32, error)
 // GetRandomRecommendedProductList 获取随机推荐商品列表
 func GetRandomRecommendedProductList(total int) ([]product.Product, error) {
 	var list []product.Product
-	db := global.DB.Preload("Pictures").Order("RAND()").Limit(total).Find(&list)
+	db := global.DB.Order("RAND()").Limit(total).Preload("Pictures").Find(&list)
 	return list, db.Error
 }
