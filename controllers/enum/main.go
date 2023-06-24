@@ -104,7 +104,6 @@ func Details(ctx *gin.Context) {
 //	@Param			type	query		string	true	"枚举类型code"
 //	@Success		200		{object}	utils.ResponseResultInfo{data=[]enum.SaveForm}
 //	@Failure		500		{object}	utils.EmptyInfo
-//	@Security		ApiKeyAuth
 //	@Router			/enum/getEnumsByType [get]
 func GetEnumsByType(ctx *gin.Context) {
 	typeCode := ctx.Query("type")
@@ -153,6 +152,7 @@ func GetAllEnums(ctx *gin.Context) {
 //	@Param			param	body		enum.ListForm	true	"请求对象"
 //	@Success		200		{object}	utils.ResponseResultInfo{data=models.PagingData{list=[]enum.Enum}}
 //	@Failure		500		{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
 //	@Router			/enum/getEnumsList [post]
 func GetEnumsList(ctx *gin.Context) {
 	listForm := enum.ListForm{}
