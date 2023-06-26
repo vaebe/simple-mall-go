@@ -26,6 +26,7 @@ func GetRouterWhiteList() []string {
 
 		"/api/product/getRandomRecommendedProductList",
 		"/api/productCategory/getAllProductCategory",
+		"/api/product/details",
 		"/api/enum/getEnumsByType",
 		"/api/enum/getAllEnums",
 		"/api/slideshow/getSlideshowsByType",
