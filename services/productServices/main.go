@@ -4,7 +4,6 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"simple-mall/global"
-	"simple-mall/models/enum"
 	"simple-mall/models/product"
 	"simple-mall/utils"
 )
@@ -69,7 +68,7 @@ func Delete(productId string) error {
 // Details 获取商品详情
 func Details(productId string) (product.Product, error) {
 	info := product.Product{}
-	db := global.DB.Model(&enum.Enum{}).Preload("Pictures").Where("id = ?", productId).First(&info)
+	db := global.DB.Model(&product.Product{}).Preload("Pictures").Where("id = ?", productId).First(&info)
 	return info, db.Error
 }
 
