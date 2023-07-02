@@ -1,6 +1,9 @@
 package shoppingCart
 
-import "simple-mall/models"
+import (
+	"simple-mall/models"
+	"simple-mall/models/product"
+)
 
 // ShoppingCart 购物车
 type ShoppingCart struct {
@@ -16,4 +19,13 @@ type SaveForm struct {
 	UserId    int32 `form:"userId" json:"userId" binding:"required"`
 	ProductId int32 `form:"productId" json:"productId" binding:"required"`
 	Count     int32 `form:"count" json:"count" binding:"required"`
+}
+
+// Details 购物车详情
+type Details struct {
+	ID          int32           `form:"id" json:"id"`
+	UserId      int32           `form:"userId" json:"userId"`
+	ProductId   int32           `form:"productId" json:"productId"`
+	ProductInfo product.Product `form:"productInfo" json:"productInfo"`
+	Count       int32           `form:"count" json:"count"`
 }

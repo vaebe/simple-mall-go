@@ -87,13 +87,14 @@ func roleLoadRouter(r *gin.RouterGroup) {
 	}
 }
 
-// shoppingCartLoadRouter 加载商品分类路由
+// shoppingCartLoadRouter 加载购物车
 func shoppingCartLoadRouter(r *gin.RouterGroup) {
 	routes := r.Group("shoppingCart")
 	{
 		routes.POST("/save", shoppingCart.Save)
 		routes.DELETE("/deleteShoppingCartProduct", shoppingCart.DeleteShoppingCartProduct)
-		routes.GET("/getShoppingCartInfoByUserId", shoppingCart.GetShoppingCartInfoByUserId)
+		routes.GET("/getShoppingCartInfo", shoppingCart.GetShoppingCartInfo)
+		routes.GET("/getTheNumberOfItemsInTheShoppingCart", shoppingCart.GetTheNumberOfItemsInTheShoppingCart)
 	}
 }
 

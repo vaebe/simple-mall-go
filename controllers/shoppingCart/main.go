@@ -70,7 +70,7 @@ func DeleteShoppingCartProduct(ctx *gin.Context) {
 	utils.ResponseResultsSuccess(ctx, "删除成功！")
 }
 
-// GetShoppingCartInfoByUserId
+// GetShoppingCartInfo
 //
 //	@Summary		根据用户 id 获取购物车信息
 //	@Description	根据用户 id 获取购物车信息
@@ -80,16 +80,44 @@ func DeleteShoppingCartProduct(ctx *gin.Context) {
 //	@Success		200	{object}	utils.ResponseResultInfo{data=[]shoppingCart.ShoppingCart}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
-//	@Router			/shoppingCart/getShoppingCartInfoByUserId [get]
-func GetShoppingCartInfoByUserId(ctx *gin.Context) {
+//	@Router			/shoppingCart/getShoppingCartInfo [get]
+func GetShoppingCartInfo(ctx *gin.Context) {
 	userId, ok := ctx.Get("userId")
 
-	if ok || userId == "" {
+	if !ok || userId == "" {
 		utils.ResponseResultsError(ctx, "未获取到用户信息！")
 		return
 	}
 
 	list, err := shoppingCartServices.GetShoppingCartInfoByUserId(userId.(int32))
+	if err != nil {
+		utils.ResponseResultsError(ctx, err.Error())
+		return
+	}
+
+	utils.ResponseResultsSuccess(ctx, list)
+}
+
+// GetTheNumberOfItemsInTheShoppingCart
+//
+//	@Summary	 根据用户 id 获取购物车商品数量
+//	@Description	根据用户 id 获取购物车商品数量
+//	@Tags			shoppingCart购物车
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	utils.ResponseResultInfo{data=int32}
+//	@Failure		500	{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
+//	@Router			/shoppingCart/getTheNumberOfItemsInTheShoppingCart [get]
+func GetTheNumberOfItemsInTheShoppingCart(ctx *gin.Context) {
+	userId, ok := ctx.Get("userId")
+
+	if !ok || userId == "" {
+		utils.ResponseResultsError(ctx, "未获取到用户信息！")
+		return
+	}
+
+	list, err := shoppingCartServices.GetTheNumberOfItemsInTheShoppingCart(userId.(int32))
 	if err != nil {
 		utils.ResponseResultsError(ctx, err.Error())
 		return
