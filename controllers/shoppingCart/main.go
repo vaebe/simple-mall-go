@@ -7,10 +7,10 @@ import (
 	"simple-mall/utils"
 )
 
-// Save
+// AddProductToShoppingCart
 //
-//	@Summary		购物车增加、编辑
-//	@Description	购物车增加、编辑
+//	@Summary		添加商品到购物车
+//	@Description	添加商品到购物车
 //	@Tags			shoppingCart购物车
 //	@Accept			json
 //	@Produce		json
@@ -18,21 +18,49 @@ import (
 //	@Success		200		{object}	utils.ResponseResultInfo
 //	@Failure		500		{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
-//	@Router			/shoppingCart/save [post]
-func Save(ctx *gin.Context) {
+//	@Router			/shoppingCart/addProductToShoppingCart [post]
+func AddProductToShoppingCart(ctx *gin.Context) {
 	saveForm := shoppingCart.SaveForm{}
 	if err := ctx.ShouldBind(&saveForm); err != nil {
 		utils.HandleValidatorError(ctx, err)
 		return
 	}
 
-	id, err := shoppingCartServices.CreateAndUpdate(saveForm)
+	id, err := shoppingCartServices.AddProductToShoppingCart(saveForm)
 	if err != nil {
 		utils.ResponseResultsError(ctx, err.Error())
 		return
 	}
 
 	utils.ResponseResultsSuccess(ctx, map[string]any{"id": id})
+}
+
+// BatchUpdateShoppingCartProductInfo
+//
+//	@Summary		批量更新购物车商品信息
+//	@Description	批量更新购物车商品信息
+//	@Tags			shoppingCart购物车
+//	@Accept			json
+//	@Produce		json
+//	@Param			param	body		[]shoppingCart.SaveForm	true	"请求对象"
+//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Failure		500		{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
+//	@Router			/shoppingCart/batchUpdateShoppingCartProductInfo [post]
+func BatchUpdateShoppingCartProductInfo(ctx *gin.Context) {
+	var editFormList []shoppingCart.SaveForm
+	if err := ctx.ShouldBind(&editFormList); err != nil {
+		utils.HandleValidatorError(ctx, err)
+		return
+	}
+
+	err := shoppingCartServices.BatchUpdateShoppingCartProductInfo(editFormList)
+	if err != nil {
+		utils.ResponseResultsError(ctx, err.Error())
+		return
+	}
+
+	utils.ResponseResultsSuccess(ctx, "更新成功")
 }
 
 // DeleteShoppingCartProduct
@@ -42,26 +70,26 @@ func Save(ctx *gin.Context) {
 //	@Tags			shoppingCart购物车
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	query		int	true	"购物车id"
 //	@Param			productId	query		int	true	"商品id"
 //	@Success		200	{object}	utils.ResponseResultInfo
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/shoppingCart/deleteShoppingCartProduct [delete]
 func DeleteShoppingCartProduct(ctx *gin.Context) {
-	shoppingCartId := ctx.Query("id")
-	if shoppingCartId == "" {
-		utils.ResponseResultsError(ctx, "购物车 id 不能为空！")
-		return
-	}
-
 	productId := ctx.Query("productId")
 	if productId == "" {
 		utils.ResponseResultsError(ctx, "商品 id 不能为空！")
 		return
 	}
 
-	err := shoppingCartServices.DeleteShoppingCartProduct(shoppingCartId, productId)
+	userId, ok := ctx.Get("userId")
+
+	if !ok || userId == "" {
+		utils.ResponseResultsError(ctx, "未获取到用户信息！")
+		return
+	}
+
+	err := shoppingCartServices.DeleteShoppingCartProduct(userId.(int32), productId)
 	if err != nil {
 		utils.ResponseResultsError(ctx, err.Error())
 		return

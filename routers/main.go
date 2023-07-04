@@ -91,7 +91,8 @@ func roleLoadRouter(r *gin.RouterGroup) {
 func shoppingCartLoadRouter(r *gin.RouterGroup) {
 	routes := r.Group("shoppingCart")
 	{
-		routes.POST("/save", shoppingCart.Save)
+		routes.POST("/addProductToShoppingCart", shoppingCart.AddProductToShoppingCart)
+		routes.POST("/batchUpdateShoppingCartProductInfo", shoppingCart.BatchUpdateShoppingCartProductInfo)
 		routes.DELETE("/deleteShoppingCartProduct", shoppingCart.DeleteShoppingCartProduct)
 		routes.GET("/getShoppingCartInfo", shoppingCart.GetShoppingCartInfo)
 		routes.GET("/getTheNumberOfItemsInTheShoppingCart", shoppingCart.GetTheNumberOfItemsInTheShoppingCart)
