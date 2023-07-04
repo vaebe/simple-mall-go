@@ -68,8 +68,28 @@ func Delete(productId string) error {
 // Details 获取商品详情
 func Details(productId string) (product.Product, error) {
 	info := product.Product{}
-	db := global.DB.Model(&product.Product{}).Preload("Pictures").Where("id = ?", productId).First(&info)
+	db := global.DB.Model(&product.Product{}).Where("id = ?", productId).Preload("Pictures").First(&info)
 	return info, db.Error
+}
+
+// GetProductInfoInBulk 批量获取商品信息
+func GetProductInfoInBulk(ids []int32) ([]product.Product, map[int32]product.Product, error) {
+	var productList []product.Product
+	db := global.DB.Model(&product.Product{}).Where("id IN ?", ids).Preload("Pictures").Find(&productList)
+
+	if db.Error != nil {
+		return nil, nil, db.Error
+	}
+
+	productInfoObj := make(map[int32]product.Product, len(productList))
+
+	for _, v := range productList {
+		v.DetailImages = ""
+		v.ParameterImages = ""
+		productInfoObj[v.ID] = v
+	}
+
+	return productList, productInfoObj, db.Error
 }
 
 // GetProductList 分页获取商品列表
