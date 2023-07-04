@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"simple-mall/controllers/address"
 	"simple-mall/controllers/enum"
 	"simple-mall/controllers/file"
 	"simple-mall/controllers/product"
@@ -126,6 +127,14 @@ func slideshowLoadRouter(r *gin.RouterGroup) {
 	}
 }
 
+// addressLoadRouter 加载地址管理
+func addressLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("address")
+	{
+		routes.GET("/getAreasByParams", address.GetAreasByParams)
+	}
+}
+
 // LoadAllRouter 加载全部路由
 func LoadAllRouter(r *gin.Engine) {
 	baseRouter := r.Group("/api")
@@ -138,5 +147,6 @@ func LoadAllRouter(r *gin.Engine) {
 		shoppingCartLoadRouter(baseRouter)
 		userLoadRouter(baseRouter)
 		slideshowLoadRouter(baseRouter)
+		addressLoadRouter(baseRouter)
 	}
 }
