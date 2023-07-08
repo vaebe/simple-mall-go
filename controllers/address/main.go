@@ -183,3 +183,37 @@ func GetAddressInfoList(ctx *gin.Context) {
 		List:     list,
 	})
 }
+
+// SetDefaultAddress
+//
+//	@Summary		设置默认地址
+//	@Description	设置默认地址
+//	@Tags			address地址管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	query		int	true	"地址id"
+//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Failure		500	{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
+//	@Router			/address/setDefaultAddress [get]
+func SetDefaultAddress(ctx *gin.Context) {
+	id := ctx.Query("id")
+	if id == "" {
+		utils.ResponseResultsError(ctx, "地址 id 不能为空！")
+		return
+	}
+
+	userId, ok := ctx.Get("userId")
+	if !ok || userId == "" {
+		utils.ResponseResultsError(ctx, "未获取到用户信息！")
+		return
+	}
+
+	err := addressServices.SetDefaultAddress(userId.(int32), id)
+	if err != nil {
+		utils.ResponseResultsError(ctx, err.Error())
+		return
+	}
+
+	utils.ResponseResultsSuccess(ctx, "设置默认地址成功！")
+}

@@ -2,6 +2,7 @@ package addressServices
 
 import (
 	"errors"
+	"gorm.io/gorm"
 	"simple-mall/global"
 	"simple-mall/models/address"
 	"simple-mall/models/product"
@@ -120,4 +121,19 @@ func GetUserAddressInfoList(userId int32) ([]address.Address, error) {
 
 	db := global.DB.Model(&address.Address{}).Where("user_id = ?", userId).Find(&addressInfoList)
 	return addressInfoList, db.Error
+}
+
+// SetDefaultAddress 设置默认地址
+func SetDefaultAddress(userId int32, id string) error {
+	return global.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Model(&address.Address{}).Where("user_id = ?", userId).Update("default_address", "00").Error; err != nil {
+			return err
+		}
+
+		if err := tx.Model(&address.Address{}).Where("user_id = ? AND id = ?", userId, id).Update("default_address", "01").Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 }

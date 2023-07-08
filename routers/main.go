@@ -137,6 +137,7 @@ func addressLoadRouter(r *gin.RouterGroup) {
 		routes.GET("/getUserAddressInfoList", address.GetUserAddressInfoList)
 		routes.GET("/details", address.Details)
 		routes.DELETE("/delete", address.Delete)
+		routes.GET("/setDefaultAddress", address.SetDefaultAddress)
 	}
 }
 
