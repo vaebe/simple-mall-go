@@ -75,3 +75,11 @@ func GetFileSuffixName(filename string) string {
 	suffix := filename[indexOfDot+1 : len(filename)] //获取后缀名
 	return strings.ToLower(suffix)                   //后缀名统一小写处理
 }
+
+// BuildMySQLLikeQueryCondition 构建 MySQL 的模糊查询条件
+func BuildMySQLLikeQueryCondition(fieldName string, value string) interface{} {
+	if value != "" {
+		return fieldName + " LIKE '%" + value + "%'"
+	}
+	return nil
+}

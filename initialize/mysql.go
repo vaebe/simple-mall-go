@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"simple-mall/global"
+	"simple-mall/models/address"
 	"simple-mall/models/enum"
 	"simple-mall/models/order"
 	"simple-mall/models/product"
@@ -61,6 +62,7 @@ func InitMysql() {
 			&order.Order{},
 			&order.OrderDetails{},
 			&slideshow.Slideshow{},
+			&address.Address{},
 		)
 		// 自动建表
 		if err != nil {

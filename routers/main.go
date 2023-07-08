@@ -132,6 +132,11 @@ func addressLoadRouter(r *gin.RouterGroup) {
 	routes := r.Group("address")
 	{
 		routes.GET("/getAreasByParams", address.GetAreasByParams)
+		routes.POST("/save", address.Save)
+		routes.POST("/getAddressInfoList", address.GetAddressInfoList)
+		routes.GET("/getUserAddressInfoList", address.GetUserAddressInfoList)
+		routes.GET("/details", address.Details)
+		routes.DELETE("/delete", address.Delete)
 	}
 }
 
