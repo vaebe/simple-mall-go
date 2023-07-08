@@ -140,7 +140,7 @@ func GetAddressInfoList(listForm address.ListForm) ([]address.Address, int64, er
 func GetUserAddressInfoList(userId int32) ([]address.Address, error) {
 	var addressInfoList []address.Address
 
-	db := global.DB.Model(&address.Address{}).Where("user_id = ?", userId).Find(&addressInfoList)
+	db := global.DB.Model(&address.Address{}).Where("user_id = ?", userId).Order("default_address desc").Find(&addressInfoList)
 	return addressInfoList, db.Error
 }
 
