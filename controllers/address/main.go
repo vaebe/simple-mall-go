@@ -55,7 +55,14 @@ func Save(ctx *gin.Context) {
 		return
 	}
 
-	id, err := addressServices.CreateAndUpdate(saveForm)
+	userId, ok := ctx.Get("userId")
+
+	if !ok || userId == "" {
+		utils.ResponseResultsError(ctx, "未获取到用户信息！")
+		return
+	}
+
+	id, err := addressServices.CreateAndUpdate(userId.(int32), saveForm)
 	if err != nil {
 		utils.ResponseResultsError(ctx, err.Error())
 		return

@@ -9,6 +9,11 @@ import (
 	"simple-mall/utils"
 )
 
+// updateNonDefaultAddresses 将用户的其他地址设为非默认地址
+func updateNonDefaultAddresses(tx *gorm.DB, userId int32) error {
+	return tx.Model(&address.Address{}).Where("user_id = ?", userId).Update("default_address", "00").Error
+}
+
 // GetAreasByParams 根据参数获取区域数据
 func GetAreasByParams(id string, pid string, deep string) ([]address.AreaInfo, error) {
 
@@ -39,7 +44,7 @@ func GetAreasByParams(id string, pid string, deep string) ([]address.AreaInfo, e
 }
 
 // CreateAndUpdate 创建或更新地址
-func CreateAndUpdate(formData address.SaveForm) (int32, error) {
+func CreateAndUpdate(userId int32, formData address.SaveForm) (int32, error) {
 	saveInfo := address.Address{
 		UserId:          formData.UserId,
 		Name:            formData.Name,
@@ -57,17 +62,33 @@ func CreateAndUpdate(formData address.SaveForm) (int32, error) {
 		DefaultAddress:  formData.DefaultAddress,
 	}
 
-	db := global.DB
+	var err error
+	err = global.DB.Transaction(func(tx *gorm.DB) error {
 
-	// 根据 ID 判断是创建还是更新
-	if formData.ID == 0 {
-		if err := db.Create(&saveInfo).Error; err != nil {
-			return 0, err
+		// 根据 id 判断是新增还是更新
+		if formData.ID == 0 {
+
+			// 创建数据是默认地址 将其他地址更改为非默认地址
+			if saveInfo.DefaultAddress == "01" {
+				if err := updateNonDefaultAddresses(tx, userId); err != nil {
+					return err
+				}
+			}
+
+			if err := tx.Create(&saveInfo).Error; err != nil {
+				return err
+			}
+		} else {
+			if err := tx.Model(&address.Address{}).Where("id = ?", formData.ID).Updates(&saveInfo).Error; err != nil {
+				return err
+			}
 		}
-	} else {
-		if err := db.Model(&address.Address{}).Where("id = ?", formData.ID).Updates(&saveInfo).Error; err != nil {
-			return 0, err
-		}
+
+		return nil
+	})
+
+	if err != nil {
+		return 0, err
 	}
 
 	return saveInfo.ID, nil
@@ -126,7 +147,7 @@ func GetUserAddressInfoList(userId int32) ([]address.Address, error) {
 // SetDefaultAddress 设置默认地址
 func SetDefaultAddress(userId int32, id string) error {
 	return global.DB.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&address.Address{}).Where("user_id = ?", userId).Update("default_address", "00").Error; err != nil {
+		if err := updateNonDefaultAddresses(tx, userId); err != nil {
 			return err
 		}
 
