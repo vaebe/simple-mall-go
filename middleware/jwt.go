@@ -117,7 +117,7 @@ func JWTAuth(whitelist []string) gin.HandlerFunc {
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
-				c.JSON(http.StatusUnauthorized, gin.H{
+				c.JSON(http.StatusOK, gin.H{
 					"code": 401,
 					"msg":  "授权已过期！",
 				})
@@ -125,7 +125,7 @@ func JWTAuth(whitelist []string) gin.HandlerFunc {
 				return
 			}
 
-			c.JSON(http.StatusUnauthorized, gin.H{
+			c.JSON(http.StatusOK, gin.H{
 				"code": 401,
 				"msg":  "未登陆！",
 			})
