@@ -136,7 +136,7 @@ func Details(ctx *gin.Context) {
 //	@Tags			address地址管理
 //	@Accept			json
 //	@Produce		json
-//	@Success		200	{object}	utils.ResponseResultInfo{data=address.Address}
+//	@Success		200	{object}	utils.ResponseResultInfo{data=[]address.Address}
 //	@Failure		500	{object}	utils.EmptyInfo
 //	@Security		ApiKeyAuth
 //	@Router			/address/getUserAddressInfoList [get]

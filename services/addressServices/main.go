@@ -5,7 +5,6 @@ import (
 	"gorm.io/gorm"
 	"simple-mall/global"
 	"simple-mall/models/address"
-	"simple-mall/models/product"
 	"simple-mall/utils"
 )
 
@@ -108,7 +107,7 @@ func Delete(id string) error {
 // Details 获取地址详情
 func Details(id string) (address.Address, error) {
 	info := address.Address{}
-	db := global.DB.Model(&product.Product{}).Where("id = ?", id).First(&info)
+	db := global.DB.Model(&address.Address{}).Where("id = ?", id).First(&info)
 	return info, db.Error
 }
 
