@@ -4,6 +4,7 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"simple-mall/global"
+	"simple-mall/models/address"
 	"simple-mall/models/order"
 	"simple-mall/models/shoppingCart"
 	"simple-mall/utils"
@@ -109,8 +110,26 @@ func GetOrderList(listForm order.ListForm) ([]order.Order, int64, error) {
 }
 
 // Details 获取订单详情
-func Details(id string) (order.Order, error) {
-	info := order.Order{}
-	db := global.DB.Model(&order.Order{}).Where("id = ?", id).First(&info)
-	return info, db.Error
+func Details(id string) (order.DetailsInfo, error) {
+	var detailsInfo order.DetailsInfo
+
+	orderInfo := order.Order{}
+	db := global.DB.Model(&order.Order{}).Where("id = ?", id).Preload("Products").First(&orderInfo)
+
+	if db.Error != nil {
+		return detailsInfo, db.Error
+	}
+
+	addressInfo := address.Address{}
+	db = global.DB.Model(&address.Address{}).Where("id = ?", orderInfo.AddressId).First(&addressInfo)
+	if db.Error != nil {
+		return detailsInfo, db.Error
+	}
+
+	detailsInfo = order.DetailsInfo{
+		Order:       orderInfo,
+		AddressInfo: addressInfo,
+	}
+
+	return detailsInfo, db.Error
 }

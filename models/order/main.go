@@ -1,6 +1,9 @@
 package order
 
-import "simple-mall/models"
+import (
+	"simple-mall/models"
+	"simple-mall/models/address"
+)
 
 // OrderProducts 订单商品详情
 type OrderProducts struct {
@@ -49,4 +52,10 @@ type SaveForm struct {
 type UpdateOrderStatusForm struct {
 	ID    int32  `form:"id" json:"id" binding:"required"`
 	State string `json:"state" form:"state"`
+}
+
+// DetailsInfo 详情信息
+type DetailsInfo struct {
+	Order
+	AddressInfo address.Address `json:"addressInfo" form:"addressInfo"`
 }
