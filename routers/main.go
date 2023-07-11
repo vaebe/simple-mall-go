@@ -5,6 +5,7 @@ import (
 	"simple-mall/controllers/address"
 	"simple-mall/controllers/enum"
 	"simple-mall/controllers/file"
+	"simple-mall/controllers/order"
 	"simple-mall/controllers/product"
 	"simple-mall/controllers/productCategory"
 	"simple-mall/controllers/role"
@@ -141,6 +142,18 @@ func addressLoadRouter(r *gin.RouterGroup) {
 	}
 }
 
+// orderLoadRouter 加载订单管理
+func orderLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("order")
+	{
+		routes.POST("/getOrderList", order.GetOrderList)
+		routes.POST("/create", order.Create)
+		routes.POST("/updateOrderStatus", order.UpdateOrderStatus)
+		routes.POST("/getUserOrderList", order.GetUserOrderList)
+		routes.GET("/details", order.Details)
+	}
+}
+
 // LoadAllRouter 加载全部路由
 func LoadAllRouter(r *gin.Engine) {
 	baseRouter := r.Group("/api")
@@ -154,5 +167,6 @@ func LoadAllRouter(r *gin.Engine) {
 		userLoadRouter(baseRouter)
 		slideshowLoadRouter(baseRouter)
 		addressLoadRouter(baseRouter)
+		orderLoadRouter(baseRouter)
 	}
 }

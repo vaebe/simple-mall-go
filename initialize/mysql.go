@@ -60,7 +60,7 @@ func InitMysql() {
 			&productCategory.ProductCategory{},
 			&shoppingCart.ShoppingCart{},
 			&order.Order{},
-			&order.OrderDetails{},
+			&order.OrderProducts{},
 			&slideshow.Slideshow{},
 			&address.Address{},
 		)
