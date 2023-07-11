@@ -11,7 +11,7 @@ func GetRoleList() ([]role.Role, error) {
 	db := global.DB.Find(&roles)
 
 	if db.Error != nil {
-		return roles, db.Error
+		return nil, db.Error
 	}
-	return roles, db.Error
+	return roles, nil
 }
