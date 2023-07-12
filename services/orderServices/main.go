@@ -111,25 +111,20 @@ func GetOrderList(listForm order.ListForm) ([]order.Order, int64, error) {
 
 // Details 获取订单详情
 func Details(id string) (order.DetailsInfo, error) {
-	var detailsInfo order.DetailsInfo
-
-	orderInfo := order.Order{}
-	db := global.DB.Model(&order.Order{}).Where("id = ?", id).Preload("Products").First(&orderInfo)
-
-	if db.Error != nil {
-		return detailsInfo, db.Error
+	orderInfo := &order.Order{}
+	if err := global.DB.Preload("Products").First(orderInfo, "id = ?", id).Error; err != nil {
+		return order.DetailsInfo{}, err
 	}
 
-	addressInfo := address.Address{}
-	db = global.DB.Model(&address.Address{}).Where("id = ?", orderInfo.AddressId).First(&addressInfo)
-	if db.Error != nil {
-		return detailsInfo, db.Error
+	addressInfo := &address.Address{}
+	if err := global.DB.First(addressInfo, "id = ?", orderInfo.AddressId).Error; err != nil {
+		return order.DetailsInfo{}, err
 	}
 
-	detailsInfo = order.DetailsInfo{
-		Order:       orderInfo,
-		AddressInfo: addressInfo,
+	detailsInfo := order.DetailsInfo{
+		Order:       *orderInfo,
+		AddressInfo: *addressInfo,
 	}
 
-	return detailsInfo, db.Error
+	return detailsInfo, nil
 }
