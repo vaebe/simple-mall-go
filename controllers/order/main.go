@@ -33,7 +33,7 @@ func Create(ctx *gin.Context) {
 		return
 	}
 
-	utils.ResponseResultsSuccess(ctx, map[string]any{"id": id})
+	utils.ResponseResultsSuccess(ctx, id)
 }
 
 // UpdateOrderStatus

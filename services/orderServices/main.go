@@ -10,7 +10,7 @@ import (
 	"simple-mall/utils"
 )
 
-// Create 创建订单
+// Create 创建订单 todo 直接购买无需清空购物车商品
 func Create(info order.SaveForm) (int32, error) {
 
 	saveInfo := order.Order{
@@ -48,7 +48,7 @@ func Create(info order.SaveForm) (int32, error) {
 		return 0, err
 	}
 
-	return info.ID, nil
+	return saveInfo.ID, nil
 }
 
 // UpdateOrderStatus 修改订单状态
