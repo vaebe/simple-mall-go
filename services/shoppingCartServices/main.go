@@ -109,7 +109,15 @@ func GetShoppingCartInfoByUserId(userId int32) ([]shoppingCart.Details, error) {
 func GetTheNumberOfItemsInTheShoppingCart(userId int32) (int32, error) {
 	var sum int32
 
-	db := global.DB.Model(&shoppingCart.ShoppingCart{}).Where("user_id = ?", userId).Select("SUM(count)").Scan(&sum)
+	db := global.DB.Model(&shoppingCart.ShoppingCart{}).Where("user_id = ?", userId)
+
+	// 获取数据总数，数据不存在直接返回 0
+	var total int64
+	if err := db.Count(&total).Error; err != nil || total == 0 {
+		return 0, err
+	}
+
+	db = db.Select("SUM(count)").Scan(&sum)
 
 	return sum, db.Error
 }
