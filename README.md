@@ -16,11 +16,21 @@
 + 注释格式化 `swag fmt`
 
 ## 打包
-+ `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build`
++ 执行 `make build` 或 `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build`
 
 ## docker 打包
 + 打包 `docker build . -t mall`
 + 测试 `docker run -p 127.0.0.1:8080:8080/tcp mall`
+
+## 部署
++ 将文件上传至服务器
++ 首次部署在部署目录创建如下文件
+  + 创建 `config.yaml` 配置文件
+  + 执行 `mkdir tmp` 创建目录
+  + 执行 `touch logs errors` 创建 log 目录
++ 将仓库 `run_mall.sh` 上传至部署目录，执行 `chmod 777 ./run_mall.sh` 增加文件的执行权限
++ 上传打包后的文件至部署目录
++ 执行 `sh ./run_mall.sh`
 
 # 订单状态
 
