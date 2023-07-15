@@ -15,6 +15,13 @@
 + 生成 `swag init`
 + 注释格式化 `swag fmt`
 
+## 打包
++ `CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build`
+
+## docker 打包
++ 打包 `docker build . -t mall`
++ 测试 `docker run -p 127.0.0.1:8080:8080/tcp mall`
+
 # 订单状态
 
 + 待支付（Pending Payment）：顾客下单后，订单状态为待支付，等待顾客完成支付操作。

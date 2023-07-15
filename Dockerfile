@@ -18,7 +18,7 @@ RUN go build -buildmode=pie -o /workspace/simple-mall-go
 # Alpine兼顾了镜像大小和运维性。
 FROM alpine:3.14
 
-# 创建目录
+# 先创建文件目录在创建文件
 RUN mkdir -p /app/tmp
 RUN touch /app/tmp/logs /app/tmp/error
 
@@ -29,7 +29,7 @@ COPY --from=builder /workspace/config.yaml /app/config.yaml
 # 设置工作目录为/app
 WORKDIR /app
 
-EXPOSE 8080
+EXPOSE 51015
 
 # 指定默认的启动命令。
 CMD ["./simple-mall-go"]
