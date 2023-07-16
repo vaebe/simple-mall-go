@@ -6,6 +6,7 @@ import (
 	"simple-mall/controllers/enum"
 	"simple-mall/controllers/file"
 	"simple-mall/controllers/order"
+	"simple-mall/controllers/pay"
 	"simple-mall/controllers/product"
 	"simple-mall/controllers/productCategory"
 	"simple-mall/controllers/role"
@@ -154,6 +155,14 @@ func orderLoadRouter(r *gin.RouterGroup) {
 	}
 }
 
+// pay 加载支付路由
+func payLoadRouter(r *gin.RouterGroup) {
+	routes := r.Group("pay")
+	{
+		routes.POST("/weChatPay", pay.WeChatPay)
+	}
+}
+
 // LoadAllRouter 加载全部路由
 func LoadAllRouter(r *gin.Engine) {
 	baseRouter := r.Group("/api")
@@ -168,5 +177,6 @@ func LoadAllRouter(r *gin.Engine) {
 		slideshowLoadRouter(baseRouter)
 		addressLoadRouter(baseRouter)
 		orderLoadRouter(baseRouter)
+		payLoadRouter(baseRouter)
 	}
 }
