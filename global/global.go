@@ -19,4 +19,5 @@ var (
 	EmailConfig *config.EmailConfig
 	QiNiuConfig *config.QiNiuConfig
 	Logger      *zap.Logger
+	LTZFConfig  *config.LTZFConfig
 )

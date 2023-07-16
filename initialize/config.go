@@ -14,7 +14,7 @@ func GetEnvInfo(env string) bool {
 
 // 设置 config 数据
 func setConfig() {
-	//debug := GetEnvInfo("MK_DEBUG")
+	//debug := GetEnvInfo("Mall_DEBUG")
 
 	// 配置文件路径
 	configFileName := "./config.yaml"
@@ -27,7 +27,6 @@ func setConfig() {
 	}
 
 	// 设置环境
-
 	if err := v.UnmarshalKey("env", &global.ENV); err != nil {
 		panic(err)
 	}
@@ -62,6 +61,12 @@ func setConfig() {
 		panic(err)
 	}
 	zap.S().Infof("七牛云存储配置信息: %v", global.QiNiuConfig)
+
+	// 蓝兔支付
+	if err := v.UnmarshalKey("LTZFConfig", &global.LTZFConfig); err != nil {
+		panic(err)
+	}
+	zap.S().Infof("蓝兔支付配置信息: %v", global.LTZFConfig)
 }
 
 // InitConfig 初始化config配置

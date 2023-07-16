@@ -32,3 +32,8 @@ type QiNiuConfig struct {
 	Bucket  string `mapstructure:"bucket" json:"bucket"`
 	BaseUrl string `mapstructure:"baseUrl" json:"baseUrl"`
 }
+
+type LTZFConfig struct {
+	MchId     string `mapstructure:"mchId" json:"mchId"`
+	SecretKey string `mapstructure:"secretKey" json:"secretKey"`
+}
