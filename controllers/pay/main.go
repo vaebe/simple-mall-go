@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"io"
 	"net/http"
 	"net/url"
@@ -68,7 +69,7 @@ func getLTZFWeChatPayApiReq(payReq pay.WeChatPayReq) url.Values {
 		"total_fee":   "0.01", // 设置为 0.01 防止误支付
 		"body":        payReq.Info,
 		"timestamp":   strconv.FormatInt(time.Now().Unix(), 10),
-		"notify_url":  "https://vaebe.top:51015/api/pay/weChatPay/notify",
+		"notify_url":  "https://vaebe.top:53015/api/pay/weChatPayNotify",
 		"attach":      payReq.OrderId,
 		"time_expire": "15m",
 		"sign":        "",
@@ -153,4 +154,29 @@ func WeChatPay(ctx *gin.Context) {
 	}
 
 	utils.ResponseResultsSuccess(ctx, resp.Data)
+}
+
+// WeChatPayNotify
+//
+//	@Summary		微信支付通知
+//	@Description	微信支付通知
+//	@Tags			pay支付
+//	@Accept			json
+//	@Produce		json
+//	@Param			param	body		pay.WeChatPayNotifyReq	true	"请求对象"
+//	@Success		200		{object}	utils.ResponseResultInfo
+//	@Failure		500		{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
+//	@Router			/pay/weChatPayNotify [post]
+func WeChatPayNotify(ctx *gin.Context) {
+	req := pay.WeChatPayNotifyReq{}
+	if err := ctx.ShouldBind(&req); err != nil {
+		utils.HandleValidatorError(ctx, err)
+		return
+	}
+
+	zap.S().Debug("支付信息", req)
+
+	// 接收成功的处理逻辑
+	ctx.String(http.StatusOK, "SUCCESS")
 }

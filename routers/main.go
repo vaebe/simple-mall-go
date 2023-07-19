@@ -160,6 +160,7 @@ func payLoadRouter(r *gin.RouterGroup) {
 	routes := r.Group("pay")
 	{
 		routes.POST("/weChatPay", pay.WeChatPay)
+		routes.POST("/weChatPayNotify", pay.WeChatPayNotify)
 	}
 }
 
