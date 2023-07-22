@@ -2,12 +2,14 @@ package orderServices
 
 import (
 	"errors"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"simple-mall/global"
 	"simple-mall/models/address"
 	"simple-mall/models/order"
 	"simple-mall/models/shoppingCart"
 	"simple-mall/utils"
+	"time"
 )
 
 // Create 创建订单 todo 直接购买无需清空购物车商品
@@ -54,6 +56,17 @@ func Create(info order.SaveForm) (int32, error) {
 // UpdateOrderStatus 修改订单状态
 func UpdateOrderStatus(userId int32, id int32, state string) error {
 	db := global.DB.Model(&order.Order{}).Where("id = ? AND user_id = ?", id, userId).Update("state", state)
+
+	if db.RowsAffected == 0 {
+		return errors.New("需要更新的数据不存在")
+	}
+
+	return db.Error
+}
+
+// BulkUpdateOrderStatus 批量修改订单状态
+func BulkUpdateOrderStatus(ids []int32, state string) error {
+	db := global.DB.Model(&order.Order{}).Where("id IN ?", ids).Update("state", state)
 
 	if db.RowsAffected == 0 {
 		return errors.New("需要更新的数据不存在")
@@ -127,4 +140,34 @@ func Details(id string) (order.DetailsInfo, error) {
 	}
 
 	return detailsInfo, nil
+}
+
+// UpdateTimedOutUnpaidOrderStatus 更新超时未支付订单状态
+func UpdateTimedOutUnpaidOrderStatus() error {
+	// 获取当前时间
+	now := time.Now()
+
+	// 计算半个小时前的时间
+	halfHourAgo := now.Add(-30 * time.Minute)
+
+	// 查询超时订单
+	var timeoutOrders []order.Order
+	if err := global.DB.Where("state = ? AND created_at <= ?", "00", halfHourAgo).Find(&timeoutOrders).Error; err != nil {
+		zap.S().Error(err.Error())
+		return err
+	}
+
+	orderIds := make([]int32, len(timeoutOrders))
+	for i, v := range timeoutOrders {
+		orderIds[i] = v.ID
+	}
+
+	zap.S().Debug("本次更新超时未支付订单Ids：", orderIds)
+
+	err := BulkUpdateOrderStatus(orderIds, "09")
+	if err != nil {
+		zap.S().Error(err.Error())
+		return err
+	}
+	return nil
 }

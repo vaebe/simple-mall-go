@@ -8,6 +8,7 @@ import (
 	"simple-mall/initialize"
 	middlewares "simple-mall/middleware"
 	"simple-mall/routers"
+	"simple-mall/tasks"
 	"time"
 )
 
@@ -31,6 +32,9 @@ func main() {
 
 	// 加载路由
 	routers.LoadAllRouter(r)
+
+	// 初始化定时任务
+	tasks.InitTasks()
 
 	port := 51015
 	serviceAddress := fmt.Sprintf("%s:%d", "127.0.0.1", port)

@@ -18,7 +18,7 @@ type OrderProducts struct {
 }
 
 // Order 订单信息
-// 订单状态 待支付 00 已支付 01 处理中 02 已发货 03 已完成 04 已取消 05 退款中 06 已退款 07 异常 08
+// 订单状态 待支付 00 已支付 01 处理中 02 已发货 03 已完成 04 已取消 05 退款中 06 已退款 07 异常 08 超时未支付 09
 type Order struct {
 	models.BaseModel
 	UserId         int32           `gorm:"type:int; not null; comment '用户id'" json:"userId"`
