@@ -13,10 +13,10 @@ func SendTheVerificationCodeEmail(VerificationCode string, emailAddress string) 
 	mailPassword := global.EmailConfig.Key // 邮箱授权码
 	addr := "smtp.qq.com:465"              // TLS地址
 	host := "smtp.qq.com"                  // 邮件服务器地址
-	Subject := "MK社区验证码"                   // 发送的主题
+	Subject := "简单商城验证码"                   // 发送的主题
 
 	e := email.NewEmail()
-	e.From = "MK社区 <209005801@qq.com>"
+	e.From = "简单商城 <209005801@qq.com>"
 	e.To = []string{emailAddress}
 	e.Subject = Subject
 	e.HTML = []byte("您的验证码为：<h1>" + VerificationCode + "</h1>")
