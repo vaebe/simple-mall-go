@@ -106,6 +106,8 @@ func WeChatPay(ctx *gin.Context) {
 		return
 	}
 
+	// todo 考虑此处是否有必要再次校验订单状态防止除未支付状态外订单调用接口
+
 	res, err := http.PostForm("https://api.ltzf.cn/api/wxpay/native", getLTZFWeChatPayApiReq(payReq))
 	if err != nil {
 		// 处理请求错误
