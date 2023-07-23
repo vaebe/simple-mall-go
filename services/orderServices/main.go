@@ -142,6 +142,24 @@ func Details(id string) (order.DetailsInfo, error) {
 	return detailsInfo, nil
 }
 
+// Delete 删除订单
+func Delete(userid int32, orderId string, isAdmin bool) error {
+	db := global.DB.Where("id = ?", orderId)
+
+	// 非管理员用户删除订单需要验证是否是自己的订单
+	if !isAdmin {
+		db = db.Where(" user_id = ?", userid)
+	}
+
+	db.Delete(&order.Order{})
+
+	if db.RowsAffected == 0 {
+		return errors.New("需要删除的数据不存在")
+	}
+
+	return nil
+}
+
 // UpdateTimedOutUnpaidOrderStatus 更新超时未支付订单状态
 func UpdateTimedOutUnpaidOrderStatus() error {
 	// 获取当前时间
@@ -162,7 +180,7 @@ func UpdateTimedOutUnpaidOrderStatus() error {
 		orderIds[i] = v.ID
 	}
 
-	zap.S().Debug("本次更新超时未支付订单Ids：", orderIds)
+	zap.S().Debug("本次更新超时未支付订单ids：", orderIds)
 
 	err := BulkUpdateOrderStatus(orderIds, "09")
 	if err != nil {

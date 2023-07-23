@@ -152,6 +152,7 @@ func orderLoadRouter(r *gin.RouterGroup) {
 		routes.POST("/updateOrderStatus", order.UpdateOrderStatus)
 		routes.POST("/getUserOrderList", order.GetUserOrderList)
 		routes.GET("/details", order.Details)
+		routes.DELETE("/delete", order.Delete)
 	}
 }
 

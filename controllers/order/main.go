@@ -99,6 +99,46 @@ func Details(ctx *gin.Context) {
 	utils.ResponseResultsSuccess(ctx, details)
 }
 
+// Delete
+//
+//	@Summary		根据 id 删除订单
+//	@Description	根据 id 删除订单
+//	@Tags			order订单管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	query		int	true	"订单id"
+//	@Success		200	{object}	utils.ResponseResultInfo
+//	@Failure		500	{object}	utils.EmptyInfo
+//	@Security		ApiKeyAuth
+//	@Router			/order/delete [delete]
+func Delete(ctx *gin.Context) {
+	orderId := ctx.Query("id")
+	if orderId == "" {
+		utils.ResponseResultsError(ctx, "订单 id 不能为空！")
+		return
+	}
+
+	userId, ok := ctx.Get("userId")
+	if !ok || userId == "" {
+		utils.ResponseResultsError(ctx, "未获取到用户信息！")
+		return
+	}
+
+	authorityId, ok := ctx.Get("authorityId")
+	if !ok || authorityId == "" {
+		utils.ResponseResultsError(ctx, "未获取到用户角色信息！")
+		return
+	}
+
+	err := orderServices.Delete(userId.(int32), orderId, authorityId == "00")
+	if err != nil {
+		utils.ResponseResultsError(ctx, err.Error())
+		return
+	}
+
+	utils.ResponseResultsSuccess(ctx, "删除成功！")
+}
+
 // GetUserOrderList
 //
 //	@Summary		获取用户订单列表
