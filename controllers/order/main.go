@@ -36,40 +36,6 @@ func Create(ctx *gin.Context) {
 	utils.ResponseResultsSuccess(ctx, id)
 }
 
-// UpdateOrderStatus
-//
-//	@Summary		更新订单状态
-//	@Description	更新订单状态
-//	@Tags			order订单管理
-//	@Accept			json
-//	@Produce		json
-//	@Param			param	body		order.UpdateOrderStatusForm	true	"请求对象"
-//	@Success		200		{object}	utils.ResponseResultInfo
-//	@Failure		500		{object}	utils.EmptyInfo
-//	@Security		ApiKeyAuth
-//	@Router			/order/updateOrderStatus [post]
-func UpdateOrderStatus(ctx *gin.Context) {
-	form := order.UpdateOrderStatusForm{}
-	if err := ctx.ShouldBind(&form); err != nil {
-		utils.HandleValidatorError(ctx, err)
-		return
-	}
-
-	userId, ok := ctx.Get("userId")
-	if !ok || userId == "" {
-		utils.ResponseResultsError(ctx, "未获取到用户信息！")
-		return
-	}
-
-	err := orderServices.UpdateOrderStatus(userId.(int32), form.ID, form.State)
-	if err != nil {
-		utils.ResponseResultsError(ctx, err.Error())
-		return
-	}
-
-	utils.ResponseResultsSuccess(ctx, "更新状态成功！")
-}
-
 // Details
 //
 //	@Summary		订单详情
