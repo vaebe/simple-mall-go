@@ -11,7 +11,9 @@ import (
 	"net/url"
 	"simple-mall/global"
 	"simple-mall/models/pay"
+	"simple-mall/services/orderServices"
 	"simple-mall/utils"
+	"simple-mall/ws"
 	"sort"
 	"strconv"
 	"strings"
@@ -168,7 +170,6 @@ func WeChatPay(ctx *gin.Context) {
 //	@Param			param	body		pay.WeChatPayNotifyReq	true	"请求对象"
 //	@Success		200		{object}	utils.ResponseResultInfo
 //	@Failure		500		{object}	utils.EmptyInfo
-//	@Security		ApiKeyAuth
 //	@Router			/pay/weChatPayNotify [post]
 func WeChatPayNotify(ctx *gin.Context) {
 	req := pay.WeChatPayNotifyReq{}
@@ -178,6 +179,38 @@ func WeChatPayNotify(ctx *gin.Context) {
 	}
 
 	zap.S().Debug("支付信息", req)
+
+	// code 不等于 0 支付失败
+	if req.Code != "0" {
+		err := ws.SendMessageToClient(req.Attach, &ws.SendMessage{Type: "orderPay", Code: 1, Data: "支付失败！"})
+		if err != nil {
+			zap.S().Debug("支付失败推送信息失败：", err.Error())
+			return
+		}
+	}
+
+	// 根据 id 获取订单状态
+	orderInfo, _ := orderServices.Details(req.Attach)
+
+	// 状态等于未支付修改状态为已支付并发送通知
+	if orderInfo.State == "00" {
+		orderId, err := strconv.Atoi(req.Attach)
+		if err != nil {
+			return
+		}
+
+		err = orderServices.UpdateOrderStatus(int32(orderId), "01")
+		if err != nil {
+			zap.S().Debug("支付完成更新订单信息失败：", err.Error())
+			return
+		}
+
+		err = ws.SendMessageToClient(req.Attach, &ws.SendMessage{Type: "orderPay", Code: 0, Data: "支付成功！"})
+		if err != nil {
+			zap.S().Debug("支付完成推送信息失败：", err.Error())
+			return
+		}
+	}
 
 	// 接收成功的处理逻辑
 	ctx.String(http.StatusOK, "SUCCESS")
