@@ -35,7 +35,7 @@ func getRouterWhiteList() []string {
 		"/api/enum/getEnumsByType",                     // 根据类型获取枚举
 		"/api/enum/getAllEnums",                        // 全部枚举
 		"/api/slideshow/getSlideshowsByType",           // 首页轮播图
-		"/api/pay/weChatPayNotify ",                    // 支付通知
+		"/api/pay/weChatPayNotify",                     // 支付通知
 	}
 }
 

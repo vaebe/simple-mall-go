@@ -23,8 +23,8 @@ type SendMessage struct {
 	Data any    `json:"data"`
 }
 
-// sendMessageToClient 向客户端发送消息
-func sendMessageToClient(clientID string, message interface{}) error {
+// SendMessageToClient 向客户端发送消息
+func SendMessageToClient(clientID string, message interface{}) error {
 	client, found := clients[clientID]
 	if !found {
 		return fmt.Errorf("client not found with ID: %s", clientID)
@@ -81,8 +81,22 @@ func HandleWebSocket(ctx *gin.Context) {
 	clients[clientID] = client
 	defer delete(clients, clientID)
 
-	err = sendMessageToClient(clientID, &SendMessage{Type: "success", Code: 0, Data: "连接成功！"})
+	zap.S().Debug("ws连接信息", clients, "客户端id", clientID)
+
+	err = SendMessageToClient(clientID, &SendMessage{Type: "success", Code: 0, Data: "连接成功！"})
 	if err != nil {
 		return
+	}
+
+	// 在此处继续处理WebSocket连接，保持长连接状态
+	for {
+		// 读取客户端发送的消息
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			zap.S().Debug("读取消息错误：", err)
+			break // 跳出循环，关闭连接
+		}
+
+		zap.S().Debug("客户端消息: ", message, "客户端id", clientID)
 	}
 }
