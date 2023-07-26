@@ -14,10 +14,11 @@ import (
 	"simple-mall/controllers/slideshow"
 	"simple-mall/controllers/user"
 	middlewares "simple-mall/middleware"
+	"simple-mall/ws"
 )
 
-// GetRouterWhiteList 获取路由白名单
-func GetRouterWhiteList() []string {
+// getRouterWhiteList 获取路由白名单
+func getRouterWhiteList() []string {
 	return []string{
 		"/api/user/login",
 		"/api/user/register",
@@ -27,14 +28,14 @@ func GetRouterWhiteList() []string {
 		"/swagger/index.html",
 		"/favicon.ico",
 
-		"/api/product/getRandomRecommendedProductList",
-		"/api/productCategory/getAllProductCategory",
-		"/api/product/getProductList",
-		"/api/product/details",
-		"/api/enum/getEnumsByType",
-		"/api/enum/getAllEnums",
-		"/api/slideshow/getSlideshowsByType",
-		"/api/slideshow/getSlideshowsByType",
+		"/api/product/getRandomRecommendedProductList", // 商品随机推荐列表
+		"/api/productCategory/getAllProductCategory",   // 商品分类
+		"/api/product/getProductList",                  // 商品列表
+		"/api/product/details",                         // 商品详情
+		"/api/enum/getEnumsByType",                     // 根据类型获取枚举
+		"/api/enum/getAllEnums",                        // 全部枚举
+		"/api/slideshow/getSlideshowsByType",           // 首页轮播图
+		"/api/pay/weChatPayNotify ",                    // 支付通知
 	}
 }
 
@@ -149,7 +150,6 @@ func orderLoadRouter(r *gin.RouterGroup) {
 	{
 		routes.POST("/getOrderList", order.GetOrderList)
 		routes.POST("/create", order.Create)
-		routes.POST("/updateOrderStatus", order.UpdateOrderStatus)
 		routes.POST("/getUserOrderList", order.GetUserOrderList)
 		routes.GET("/details", order.Details)
 		routes.DELETE("/delete", order.Delete)
@@ -165,9 +165,9 @@ func payLoadRouter(r *gin.RouterGroup) {
 	}
 }
 
-// LoadAllRouter 加载全部路由
-func LoadAllRouter(r *gin.Engine) {
-	baseRouter := r.Group("/api")
+func setupAPIRouter(r *gin.Engine) {
+	baseRouter := r.Group("/api", middlewares.JWTAuth(getRouterWhiteList()))
+
 	{
 		enumLoadRouter(baseRouter)
 		fileLoadRouter(baseRouter)
@@ -181,4 +181,17 @@ func LoadAllRouter(r *gin.Engine) {
 		orderLoadRouter(baseRouter)
 		payLoadRouter(baseRouter)
 	}
+}
+
+// setupWebSocketRouter 加载 ws 路由
+func setupWebSocketRouter(r *gin.Engine) {
+	r.GET("/ws", ws.HandleWebSocket)
+}
+
+// InitRouter 初始化路由
+func InitRouter(r *gin.Engine) {
+	r.Use(middlewares.Cors())
+
+	setupAPIRouter(r)
+	setupWebSocketRouter(r)
 }

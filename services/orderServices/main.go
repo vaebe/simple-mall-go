@@ -54,8 +54,8 @@ func Create(info order.SaveForm) (int32, error) {
 }
 
 // UpdateOrderStatus 修改订单状态
-func UpdateOrderStatus(userId int32, id int32, state string) error {
-	db := global.DB.Model(&order.Order{}).Where("id = ? AND user_id = ?", id, userId).Update("state", state)
+func UpdateOrderStatus(id int32, state string) error {
+	db := global.DB.Model(&order.Order{}).Where("id = ?", id).Update("state", state)
 
 	if db.RowsAffected == 0 {
 		return errors.New("需要更新的数据不存在")
