@@ -92,7 +92,7 @@ func GetUserOrderList(userId int32, listForm order.ListForm) ([]order.Order, int
 	}
 
 	// 分页
-	if err := query.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Products").Find(&list).Error; err != nil {
+	if err := query.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Products").Order("created_at desc").Find(&list).Error; err != nil {
 		return nil, 0, err
 	}
 
@@ -115,7 +115,7 @@ func GetOrderList(listForm order.ListForm) ([]order.Order, int64, error) {
 	}
 
 	// 分页
-	if err := query.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Products").Find(&list).Error; err != nil {
+	if err := query.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Products").Order("created_at desc").Find(&list).Error; err != nil {
 		return nil, 0, err
 	}
 
