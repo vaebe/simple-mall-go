@@ -1,14 +1,16 @@
 package pay
 
+import "simple-mall/models"
+
 // WeChatPayReq 微信支付请求接口参数
 type WeChatPayReq struct {
-	OrderId string  `json:"orderId" form:"orderId" binding:"required"` // 订单id
-	Price   float64 `json:"price" form:"price" binding:"required"`     // 商品金额
-	Info    string  `json:"info" form:"info" binding:"required"`       // 商品描述
+	OrderId string `json:"orderId" form:"orderId" binding:"required"` // 订单id
+	Price   string `json:"price" form:"price" binding:"required"`     // 商品金额
+	Info    string `json:"info" form:"info" binding:"required"`       // 商品描述
 }
 
-// WeChatPayNotifyInfo 微信支付信息
-type WeChatPayNotifyInfo struct {
+// WeChatPayNotifyReq 微信支付通知信息参数
+type WeChatPayNotifyReq struct {
 	Code        string `gorm:"type:varbinary(4); not null; comment '支付结果'" json:"code" form:"code"` // 0：成功 1：失败
 	Timestamp   string `gorm:"type:varbinary(40); not null; comment '时间戳'" json:"timestamp" form:"timestamp"`
 	MchId       string `gorm:"type:varbinary(100); not null; comment '商户号'" json:"mch_id" form:"mch_id"`
@@ -24,15 +26,21 @@ type WeChatPayNotifyInfo struct {
 	Openid      string `gorm:"type:varbinary(100); not null; comment '支付者信息'" json:"openid" form:"openid"`
 }
 
-// OrderRefundReq 订单退款请求参数
-type OrderRefundReq struct {
-	OrderId string  `json:"orderId" form:"orderId" binding:"required"` // 订单id
-	Price   float64 `json:"price" form:"price" binding:"required"`     // 退款金额
-	Info    string  `json:"info" form:"info" binding:"required"`       // 退款描述
+// WeChatPayNotifyInfo 微信支付信息
+type WeChatPayNotifyInfo struct {
+	models.BaseModel
+	WeChatPayNotifyReq
 }
 
-// RefundNotifyInfo 退款通知信息
-type RefundNotifyInfo struct {
+// OrderRefundReq 订单退款请求参数
+type OrderRefundReq struct {
+	OrderId string `json:"orderId" form:"orderId" binding:"required"` // 订单id
+	Price   string `json:"price" form:"price" binding:"required"`     // 退款金额
+	Info    string `json:"info" form:"info" binding:"required"`       // 退款描述
+}
+
+// RefundNotifyReq 退款通知信息参数
+type RefundNotifyReq struct {
 	Code        string `gorm:"type:varbinary(4); not null; comment '支付结果'" json:"code" form:"code"` // 0：成功 1：失败
 	Timestamp   string `gorm:"type:varbinary(40); not null; comment '时间戳'" json:"timestamp" form:"timestamp"`
 	MchId       string `gorm:"type:varbinary(100); not null; comment '商户号'" json:"mch_id" form:"mch_id"`
@@ -45,4 +53,10 @@ type RefundNotifyInfo struct {
 	RefundFee   string `gorm:"type:varbinary(100); not null; comment '退款金额'" json:"refund_fee" form:"refund_fee"`
 	Sign        string `gorm:"type:varbinary(300); not null; comment '签名'" json:"sign" form:"sign"`
 	SuccessTime string `gorm:"type:varbinary(100); not null; comment '支付完成时间'" json:"success_time" form:"success_time"`
+}
+
+// RefundNotifyInfo 退款信息
+type RefundNotifyInfo struct {
+	models.BaseModel
+	RefundNotifyReq
 }

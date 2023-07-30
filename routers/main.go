@@ -162,6 +162,8 @@ func payLoadRouter(r *gin.RouterGroup) {
 	{
 		routes.POST("/weChatPay", pay.WeChatPay)
 		routes.POST("/weChatPayNotify", pay.WeChatPayNotify)
+		routes.POST("/orderRefund", pay.OrderRefund)
+		routes.POST("/refundNotify", pay.RefundNotify)
 	}
 }
 
