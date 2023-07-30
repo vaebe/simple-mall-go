@@ -182,6 +182,10 @@ func UpdateTimedOutUnpaidOrderStatus() error {
 
 	zap.S().Debug("本次更新超时未支付订单ids：", orderIds)
 
+	if len(orderIds) == 0 {
+		return nil
+	}
+
 	err := BulkUpdateOrderStatus(orderIds, "09")
 	if err != nil {
 		zap.S().Error(err.Error())
