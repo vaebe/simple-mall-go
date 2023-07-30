@@ -12,6 +12,7 @@ import (
 	"simple-mall/models/address"
 	"simple-mall/models/enum"
 	"simple-mall/models/order"
+	"simple-mall/models/pay"
 	"simple-mall/models/product"
 	"simple-mall/models/productCategory"
 	"simple-mall/models/role"
@@ -63,6 +64,8 @@ func InitMysql() {
 			&order.OrderProducts{},
 			&slideshow.Slideshow{},
 			&address.Address{},
+			&pay.WeChatPayNotifyInfo{},
+			&pay.RefundNotifyInfo{},
 		)
 		// 自动建表
 		if err != nil {
