@@ -115,7 +115,7 @@ func GetProductList(listForm product.ListForm) ([]product.Product, int32, error)
 	total := int32(db.RowsAffected)
 
 	// 分页
-	db = db.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Pictures").Find(&list)
+	db = db.Scopes(utils.Paginate(listForm.PageNo, listForm.PageSize)).Preload("Pictures").Order("created_at desc").Find(&list)
 
 	if db.Error != nil {
 		return list, 0, db.Error

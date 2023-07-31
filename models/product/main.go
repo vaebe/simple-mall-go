@@ -20,7 +20,7 @@ type Product struct {
 	Stock             int32              `gorm:"type:int; default:1; comment '商品库存'" json:"stock"`
 	Info              string             `gorm:"type:varbinary(300); not null; comment '商品简介'" json:"info"`
 	DetailImages      string             `gorm:"type:text; comment '商品详情图片列表'" json:"detailImages"`
-	ParameterImages   string             `gorm:"type:text; comment '商品参数列表'" json:"parameterImages"`
+	ParameterImages   string             `gorm:"type:text; comment '商品参数图片列表'" json:"parameterImages"`
 	ProductCategoryId int32              `gorm:"type:int; not null; comment '商品分类id'" json:"productCategoryId"`
 	Pictures          []ProductImageLink `json:"pictures"`
 }
