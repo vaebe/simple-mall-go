@@ -90,7 +90,7 @@ func WeChatPay(ctx *gin.Context) {
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-
+			utils.ResponseResultsError(ctx, err.Error())
 		}
 	}(res.Body)
 
